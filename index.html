@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find the best authentic coffee blend for you. Check out our online shop and get yours today. May your coffee kick in before reality does."/>
+    <meta name="keywords" content="coffee, shop, quality, authentic"/>
+    <meta name="author" content="Mihailo Ilic"/>
     <title>coffeelux | Quality & Authentic Coffee Shop</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="assets/slick/slick.css"/>
-    <!-- <link rel="stylesheet" type="text/css" href="assets/slick/slick-theme.css"/> -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
 </head>
 <body>
@@ -31,10 +34,10 @@
         <!-- lista zelja, korpa, taster za meni -->
         <div id="side-togglers" class="col-7 col-md-3 text-right">
             <a id="wishlist-button" class="position-relative mx-2" href="#!">
-                <span class="far fa-heart"></span><span class="badge badge-dark">1</span>
+                <span class="far fa-heart"></span><span class="badge badge-dark"></span>
             </a>
             <a id="cart-button" class="position-relative mx-2" href="#!">
-                <span class="fas fa-shopping-cart"></span>
+                <span class="fas fa-shopping-cart"></span><span class="badge badge-dark">1</span>
             </a>
             <a id="menu-button" class="position-relative d-inline d-md-none mx-2" href="#!">
                 <span class="fas fa-bars"></span>
@@ -49,7 +52,7 @@
     <!-- SIDEBAR ZA LISTU ZELJA I KORPU -->
     <div id="sidebar-fix"></div>
     <div id="sidebar-overlay" class="overflow-hidden">
-        <div id="sidebar" class="h-100 text-white p-5">
+        <div id="sidebar" class="h-100 text-dark py-5 px-2 p-md-5">
             <span id="sidebar-icon"></span>
             <a href="#!" id="close-sidebar">
                 <div id="close-sidebar-wrapper">
@@ -58,54 +61,25 @@
                 </div>
             </a>
             <h3  id="sidebar-title" class="text-center"></h3>
-            <div id="sidebar-content"></div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
-            <div>df</div>
+            <div id="sidebar-content">
+            </div>
+        </div>
+    </div>
+    <!-- modal za proizvode -->
+    <div id="product-modal-overlay">
+        <div id="product-modal-wrapper" class="d-flex justify-content-center align-items-start py-5">
+            <div id="product-modal">
+                <div class="position-relative">
+                    <a href="#!" id="close-product-modal">
+                        <div id="close-product-modal-wrapper">
+                            <span class="close-button-slash"></span>
+                            <span class="close-button-slash"></span>
+                        </div>
+                    </a>
+                </div>
+                <div id="product-modal-content" class="mx-0 mt-5 p-4 row">
+                </div>
+            </div>
         </div>
     </div>
     <!-- HOME SADRZAJ -->
@@ -114,15 +88,52 @@
         <div id="hero" class="d-flex flex-column align-items-center justify-content-center text-white text-center">
             <h1 class="hero-text">Quality & Authentic Coffee</h1>
             <p class="hero-text">Find the best coffee blend for you. Check out our online shop and get yours today. May your coffee kick in before reality does.</p>
-            <a href="#s1" class="hero-button button mt-3">Check it out</a>
+            <a href="#new-arrivals-wrapper" class="hero-button button mt-3">Check it out</a>
             <div id="slider">
             </div>
         </div>
-        <section id="s1">
-
+        <section id="new-arrivals-wrapper" class="container pt-5">
+            <p class="small text-center m-0 mt-5 color-primary">Best Coffee For You</p>
+            <h2 class="text-center mb-5">New Arrivals</h2>
+            <div id="new-arrivals" class="position-relative row">
+            </div>
+        </section>
+        <section id="discounted-wrapper" class="container pt-4">
+            <p class="small text-center m-0 mt-5 color-primary">Don't Miss These Offers</p>
+            <h2 class="text-center mb-5">Discounted Products</h2>
+            <div id="discounted" class="position-relative row">
+            </div>
+        </section>
+        <section id="visit-shop" class="d-flex flex-column align-items-center justify-content-center p-5 mt-5">
+            <h2 class="mt-5 p-2 text-white bg-darkTransparent">Haven't Found the Right Coffee Yet?</h3>
+            <p class="p-1 text-white bg-darkTransparent">Don't worry! We have a wide variety of choices. Please visit our shop for a full list.</p>
+            <a href="shop.html" class="button mb-5">Visit shop</a>
         </section>
     </main>
-
+    <footer class="row container mx-auto align-items-center mt-4 py-4">
+        <div id="footer-company-info" class="col-12 col-md-4 text-center">
+            <a class="font-weight-bold" href="index.html">
+                <img src="assets/img/logo.png" class=""/><span>coffeelux</span>
+            </a>
+            <p class="text-muter text-center">Quality & Authentic Coffee</p>
+        </div>
+        <div id="footer-links" class="col-12 col-md-4 text-center mt-5 mt-md-0">
+            <h5 id="footer-links-title" class="d-inline">Links</h5>
+            <ul class="mt-2">
+                <li>
+                    <a href="documentation.pdf" target="_blank"><span class="far fa-file-pdf"></span> Documentation</a>
+                </li>
+                <li>
+                    <a href="assets/js/main.js" target="_blank"><span class="far fa-file-code"></span> main.js</a>
+                </li>
+                <li>
+                    <a href="sitemap.xml" target="_blank"><span class="fas fa-sitemap"></span> Sitemap</a>
+                </li>
+                
+            </ul>
+        </div>
+        <p class="col-12 col-md-4 text-center text-muted mt-5 mt-md-0">Mihailo Ilic 41/19</p>
+    </footer>
     <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="assets/slick/slick.min.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>

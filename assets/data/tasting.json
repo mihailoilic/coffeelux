@@ -1,0 +1,47 @@
+[
+    {
+        "id":1,
+        "name":"Fruit"
+    },
+    {
+        "id":2,
+        "name":"Flowers"
+    },
+    {
+        "id":3,
+        "name":"Honey"
+    },
+    {
+        "id":4,
+        "name":"Caramel"
+    },
+    {
+        "id":5,
+        "name":"Chocolate"
+    },
+    {
+        "id":6,
+        "name":"Roasted cereals"
+    },
+    {
+        "id":7,
+        "name":"Spice"
+    },
+    {
+        "id":8,
+        "name":"Toffee"
+    },
+    {
+        "id":9,
+        "name":"Malt"
+    },
+    {
+        "id":10,
+        "name":"Nuts"
+    },
+    {
+        "id":11,
+        "name":"Citrus"
+    }
+    
+]

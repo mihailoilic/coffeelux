@@ -1,0 +1,16 @@
+{
+    "homeSlider": {
+        "prevArrow": "<a href='#!' class='slick-prev'><span class='fas fa-long-arrow-alt-left'></span></a>",
+        "nextArrow": "<a href='#!' class='slick-next'><span class='fas fa-long-arrow-alt-right'></span></a>"
+    },
+    "productsSlider": {
+        "slidesToShow": 4,
+        "prevArrow": "<a href='#!' class='slick-prev'><span class='fas fa-long-arrow-alt-left'></span></a>",
+        "nextArrow": "<a href='#!' class='slick-next'><span class='fas fa-long-arrow-alt-right'></span></a>",
+        "responsive": [
+            { "breakpoint": 1300, "settings": { "slidesToShow": 3 } },
+            { "breakpoint": 992, "settings": { "slidesToShow": 2 } },
+            { "breakpoint": 700, "settings": { "slidesToShow": 1 } }
+        ]
+    }
+}

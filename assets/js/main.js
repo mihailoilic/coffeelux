@@ -2,17 +2,36 @@ const data = {};
 $(document).ready(function(){
     initializePage();
 });
+
 //INICIJALIZACIJA SVAKE STRANICE
 async function initializePage(){
     try{
         data.nav = await fetchData("nav.json");
         loadNav();
-        loadSidebar();
-        pageRelatedFeatures();
     }
     catch(c){
-        console.log(`Greska pri ucitavanju! Status ${c}`);
+        console.log(`Error loading navigation! Status ${c}`);
     }
+    
+    data.cart = getLocalStorageItem("cart");
+    data.wishList = getLocalStorageItem("wishlist");
+    refreshBadges();
+
+    loadSidebar();
+    loadProductsModal();
+
+    try {
+        data.products = await fetchData("products.json");
+        data.brands = await fetchData("brands.json");
+        data.categories = await fetchData("categories.json");
+        data.tasting = await fetchData("tasting.json");
+    }
+    catch(c){
+        console.log(`Error loading products! Status ${c}`);
+    }
+
+    pageRelatedFeatures();
+
     $("#loading").fadeOut(1000);
 }
 function loadNav(){
@@ -26,6 +45,7 @@ function loadNav(){
     }
     if(!data.page){
         data.page = "Home";
+        $("#menu, #responsive-menu").find("a:first").addClass("active");
     }
     navScrollEvent();
     $(window).on("scroll",navScrollEvent);
@@ -42,6 +62,7 @@ function navScrollEvent(){
         $("#header").removeClass("bg-darkTransparent")
     }
 }
+
 //AJAX DOHVATANJE
 function fetchData(filename){
     return new Promise((resolve, reject)=>{
@@ -58,16 +79,87 @@ function fetchData(filename){
         });
     });
 }
-//LISTA ZELJA, KORPA
-async function loadSidebar(){
-    $("#close-sidebar").click(hideSidebar);
-    $("#sidebar-overlay").click(hideSidebar);
-    $("#sidebar").click(function(event){stopPropagation(event)});
+
+//OBRADA LOCAL STORAGE
+function getLocalStorageItem(name){
+    let item = localStorage.getItem(name);
+    if(item){
+        parsedItem = JSON.parse(item);
+        if(parsedItem.length > 0){
+            return parsedItem;
+        }
+    }
+    return false;
+}
+function cartProductIndex(id){
+    let productIndex = -1;
+    data.cart.find((el,ind)=>{ 
+        if(el.id == id){
+            productIndex = ind;
+            return true;
+        }
+        return false;
+    });
+    return productIndex;
+}
+function setCartItem(productID, quantity, add = false){
+    if(data.cart){
+        let productIndex = cartProductIndex(productID);
+        if(productIndex > -1){
+            let newQuantity = quantity;
+            if(add){
+                newQuantity += data.cart[productIndex].quantity;
+            }
+            data.cart[productIndex].quantity = newQuantity;
+        }
+        else {
+            data.cart.push({"id": productID, "quantity": quantity});
+        }
+    }
+    else {
+        data.cart = [{"id": productID, "quantity": quantity}];
+    }
+    localStorage.setItem("cart", JSON.stringify(data.cart));
+    refreshBadges();
+}
+function removeCartProduct(productID){
+    data.cart.splice(cartProductIndex(productID), 1);
+    localStorage.setItem("cart",JSON.stringify(data.cart));
+    refreshBadges();
+}
+function setWishListProduct(productID){
+    if(data.wishList){
+        if(!data.wishList.includes(productID)){
+            data.wishList.push(productID);
+        }
+    }
+    else {
+        data.wishList = [productID];
+    }
+    localStorage.setItem("wishlist", JSON.stringify(data.wishList));
+    refreshBadges();
+}
+function removeWishListProduct(productID){
+    for(i in data.wishList){
+        if (data.wishList[i] == productID){
+            data.wishList.splice(i,1);
+            break;
+        } 
+    }
+    localStorage.setItem("wishlist", JSON.stringify(data.wishList));
+    refreshBadges();
+}
+function refreshBadges(){
+    $("#cart-button .badge").text(data.cart.length ? String(data.cart.length) : "");
+    $("#wishlist-button .badge").text(data.wishList.length ? String(data.wishList.length) : "");
+}
+
+//SIDEBAR - LISTA ZELJA I KORPA
+function loadSidebar(){
+    $("#close-sidebar, #sidebar-overlay").click(hideSidebar);
+    $("#sidebar").click(function(event){event.stopPropagation()});
     $("#cart-button").click(openCart);
     $("#wishlist-button").click(openWishList);
-}
-function stopPropagation(event){
-    event.stopPropagation();
 }
 function showSidebar(title, htmlContent, iconClass){
     $("#sidebar-title").text(title);
@@ -94,31 +186,236 @@ function hideSidebar(){
     $("#sidebar-fix").fadeOut(10);
     $("body").css("overflow-y", "scroll");
 }
+
+//KORPA
 function openCart(){
-    let html = "cart!";
+    let html = "";
+    if(data.cart && data.cart.length > 0){
+        for(i in data.cart){
+            let product = getItemById(data.products, data.cart[i].id);
+            let price = product.price.new * Number(data.cart[i].quantity);
+            data.cart[i].price = product.price.new;
+            html += `<div class="sidebar-item p-0 mt-5 d-flex">
+                <a href="#!" data-product-id="${product.id}" class="product-link bg-white d-flex align-items-center justify-content-center">
+                    <div class="sidebar-item-image">
+                        <img src="assets/img/${product.img[0]}" alt="${product.title}" class="w-100"/>
+                        <div class="text-center small mt-1">View Product</div>
+                    </div>
+                </a>
+                <div class="d-flex flex-column justify-content-center align-items-start ml-4">
+                    <h5>${product.title}</h5>
+                    <div class="my-3">Quantity: <input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="${data.cart[i].quantity}" data-product-id="${product.id}" min="1", onchange="if(this.value<1){this.value=1;}"/></div>
+                    <span class="cart-item-price color-primary h4">${formatPrice(price)}</span>
+                    <a href="#!" data-product-id="${product.id}" class="remove-cart-item d-flex align-items-center primary-button p-2 text-white">Remove</a>
+                </div>
+            </div>`;
+        }
+    }
+    else {
+        html = `<p class="mt-5">Your cart is empty!<br/>Visit our <a href="shop.html">shop</a> to add new items.</p>`;
+    }
+
     showSidebar("Your Cart", html, "fas fa-shopping-cart");
+    showCartTotal();
+
+    $(".sidebar-item .product-link")
+        .click(hideSidebar)
+        .each(function(){
+            bindProductsModal(this);
+        });
+    $(".sidebar-item .remove-cart-item").click(function(){
+        removeCartProduct(Number($(this).attr("data-product-id")));
+        $(this).parent().parent().fadeOut(300, openCart);
+    });
+    $(".sidebar-item .cart-item-quantity").change(function(){
+        let id = Number($(this).attr("data-product-id"));
+        let quantity = Number($(this).val());
+        let index = cartProductIndex(id);
+        let price = data.cart[index].price;
+        setCartItem(id,quantity);
+        $(this)
+            .parent()
+            .parent()
+            .find(".cart-item-price")
+            .text(`${formatPrice(price*quantity)}`);
+        showCartTotal();
+    });
 }
+function showCartTotal(){
+    if(data.cart && data.cart.length > 0){
+        let total = 0;
+        $(data.cart).each(function(){
+            total += this.price * this.quantity;
+        });
+        $(".total-price").remove();
+        $("#sidebar-content").append(`<div class="total-price mt-5">Total price: <span class="color-primary h4">${formatPrice(total)}</span></div>`);
+    }
+}
+//LISTA ZELJA
 function openWishList(){
+    //FIX
     let html = "wish list!";
     showSidebar("Your Wish List", html, "far fa-heart");
 }
+
+
+
+//MODAL ZA PROIZVODE
+function loadProductsModal(){
+    $("#close-product-modal").click(hideProductsModal);
+    $("#product-modal-overlay").click(hideProductsModal);
+    $("#product-modal").click(function(event){event.stopPropagation();})
+}
+function bindProductsModal(element){
+    let product = getItemById(data.products, element.getAttribute("data-product-id"));
+    $(element).click(function(){
+        showProductsModal(product);
+    });
+}
+function hideProductsModal(){
+    $("#product-modal-overlay").stop().fadeOut(300);
+    $("body").css("overflow-y", "scroll");
+    $("#sidebar-fix").fadeOut(10);
+}
+function showProductsModal(product){
+    $("#sidebar-fix").fadeIn(10);
+    let decaf = product.decaf ? "Decaffeinated" : "";
+    let category = getItemById(data.categories, product.category).name;
+    let tasting = data.tasting.filter(el=>product.tasting.includes(el.id)).map(el=>el.name).join(", ");
+    let images="";
+    for (img of product.img){
+        images+=`<div class="col-3 mr-2 p-0"> <a href="#!" class="product-image-link"><img src="assets/img/${img}" alt="" class="img-fluid"/></a></div>`;
+    }
+    let html = `<div id="product-modal-images" class="col-12 col-md-6">
+    <img src="assets/img/${product.img[0]}" id="product-modal-image" alt="" class="img-fluid"/>
+    <div id="product-modal-all-images" class="row mt-2 mx-0">${images}</div></div>
+    <div id="product-modal-info" class="col-12 col-md-6 d-flex flex-column"><h4 class="mt-4 mt-md-0">${product.title}</h4>
+    <p class="text-muted m-0">${decaf} ${category}</p>
+    ${product.price.discount ? `<div><span class="product-modal-discount d-inline text-white p-1">-${product.price.discount}%</span></div>`:""}
+    <p class="mt-3">${product.description}</p>
+    <p><span class="font-weight-bold">Tasting:</span> ${tasting}</p>
+    <p><span class="font-weight-bold">Package size:</span> ${product.size}</p>
+    <div>${product.price.old ? `<s class="text-muted">$${product.price.old}</s> `:""}<span class="color-primary h4">$${product.price.new}</span></div>
+    <div class="mt-3"><a href="#!" class="primary-button p-2 text-white" id="add-to-cart" data-product-id = "${product.id}">Add to cart</a><input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="1" min="1", max="99" onchange="if(this.value<1)
+    {this.value=1;} if(this.value>99){this.value=99;}"/></div></div>`;
+    
+    $("#product-modal-overlay")
+        .find("#product-modal-content")
+        .html(html)
+        .end()
+        .stop()
+        .fadeIn(300);
+    $("body").css("overflow-y", "hidden");
+
+    $(".product-image-link").click(function(){
+        let newSrc = $(this).find("img").attr("src");
+        $("#product-modal-image")
+            .animate({"opacity":".3"},200,"swing",function(){
+                $(this).attr("src", newSrc);
+            })
+            .animate({"opacity":"1"}, 200); 
+    });
+
+    $("#add-to-cart").click(function(){
+        setCartItem(Number($(this).attr("data-product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
+        $("#product-modal-info .cart-item-quantity").val("1");
+        let success = document.createElement("p");
+        $(success).text("Successfully added to cart!").hide().appendTo("#product-modal-info").fadeIn(300);
+        setTimeout(function(){-
+            $(success).fadeOut(300, function(){$(this).remove();});
+        }, 1000);
+    });
+}
+
+//ISPIS PROIZVODA
+function formatPrice(price){
+    return price.toLocaleString("en-US",{style: 'currency', currency: 'USD'});
+}
+function showProducts(containerID, products, grid = true){
+    for(product of products){
+        let productLink = document.createElement("a");
+        $(productLink).attr("class", "product-link");
+        $(productLink).attr("href", "#!");
+        $(productLink).attr("data-product-id", product.id);
+        $(productLink).append(`<div class="product card text-dark rounded-0 border-0">
+        ${product.price.discount ? `<div class="product-discount text-white py-1 px-2">-` + product.price.discount + "%</div>" : ""}
+        <img class="card-img-top rounded-0" src="assets/img/${product.img[0]}" alt=""/>
+        <div class="card-body">
+            <h5 class="card-title text-center">${product.title}</h5>
+            ${product.price.old ? `<s class="small d-block card-text text-center text-muted">$` + product.price.old + "</s>" : `<div class="small">&nbsp;</div>`}
+            <p class="card-text text-center color-primary product-price">$${product.price.new}</p>
+        </div>
+        </div>`);
+        bindProductsModal(productLink);
+        let productContainer = document.createElement("div");
+        let productContainerClass = "p-2";
+        if(grid){
+            productContainerClass += " col-12 col-sm-6 col-md-4 col-lg-3";
+        }
+        $(productContainer).addClass(productContainerClass);
+        $(productContainer).append(productLink);
+        $(`#${containerID}`).append(productContainer);
+    }
+}
+//FILTRIRANJE I SORTIRANJE
+function getItemById(array, ID){
+    return array.find(el => el.id == ID);
+}
+function sortProductsByDate(products){
+    return products.sort((a,b)=>{
+        let datumA = new Date(a.date);
+        let datumB = new Date(b.date);
+        return datumB - datumA;
+    });
+}
+function sortProductsByDiscount(products){
+    return products.sort((a,b)=>{
+        return b.price.discount - a.price.discount;
+    });
+}
+function filterDiscountedProducts(products){
+    return products.filter(el => el.price.discount > 0);
+}
+
+
 //USMERAVANJE U SKLADU SA TRENUTNOM STRANICOM
 function pageRelatedFeatures(){
     switch(data.page){
         case "Home": loadHomePage(); break;
+        case "Shop": loadShopPage(); break;
     }
 }
+
 //HOME STRANICA
-function loadHomePage(){
-    loadSlider();
+async function loadHomePage(){
+    try{
+        data.slider = await fetchData("slider.json");
+        data.slickSettings = await fetchData("slick.json");
+        loadSlider();
+        loadNewArrivals();
+        loadDiscounted();
+    }
+    catch(c){
+        console.log("Error loading home page sliders. Status: " + c);
+    }
 }
-async function loadSlider(){
-    data.slider = await fetchData("slider.json");
+function loadSlider(){
     for(img of data.slider){
         $("#slider").append(`<div><img src="assets/img/${img.src}" class="w-100 h-100" alt="${img.title}"/></div>`);
     }
-    $("#slider").slick({
-        prevArrow: `<a href="#!" class="slick-prev"><span class="fas fa-long-arrow-alt-left"></span></a>`,
-        nextArrow: `<a href="#!" class="slick-next"><span class="fas fa-long-arrow-alt-right"></span></a>`
-    });
+    $("#slider").slick(data.slickSettings.homeSlider);
+}
+function loadNewArrivals(){
+    showProducts("new-arrivals", sortProductsByDate(data.products).slice(0,6), false);
+    $("#new-arrivals").slick(data.slickSettings.productsSlider);
+}
+function loadDiscounted(){
+    showProducts("discounted", filterDiscountedProducts(sortProductsByDiscount(data.products)), false);
+    $("#discounted").slick(data.slickSettings.productsSlider);
+}
+
+//SHOP STRANICA
+function loadShopPage(){
+    //FIX
+    showProducts("shop-pr",data.products);
 }

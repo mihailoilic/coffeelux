@@ -1,0 +1,513 @@
+[
+    {
+        "id":1,
+        "title":"Lavazza Caffe Decaffeinato",
+        "description": "Lavazza Decaffeinato is a full-flavoured decaffeinated coffee made combining fine beans from South America and the art of decaffeination process; we use a natural method that leaves all the other coffee's properties unaltered.",
+        "brand" : 1,
+        "category" : 1,
+        "tasting" : [5],
+        "size" : "250g",
+        "decaf": true,
+        "price" : {
+            "discount": 30,
+            "old": 29.99,
+            "new": 19.99
+        },
+        "img" : ["lavazza-decaffeinato-1.webp", "lavazza-decaffeinato-2.jpg"],
+        "date" : "2021-02-14T19:12:01.125Z"
+    },
+    {
+        "id":2,
+        "title":"Illy DECAF Ground Coffee",
+        "description": "Smooth balanced and pleasantly nuanced, this coffee is both sweet and rich; and is enhanced by aromatic notes of caramel and chocolate, some flavour as the medium roast ground without the caffeine.",
+        "brand" : 2,
+        "category" : 1,
+        "tasting" : [4,5],
+        "size" : "250g",
+        "decaf": true,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 24.99
+        },
+        "img" : ["illy-decaf-ground-1.jpg","illy-decaf-ground-2.jpg"],
+        "date" : "2021-01-14T11:22:01.144Z"
+    },
+    {
+        "id":3,
+        "title":"Illy Medium Roast Ground Coffee",
+        "description": "An authentic Italian coffee that is flawlessly consistent, smooth, balanced, and never bitter – perfect for all coffee preparations. This coffee is packed in an air-free, pressurized can that enhances and seals in the precious aromas and oils, so you enjoy the freshest taste – cup after cup.",
+        "brand" : 2,
+        "category" : 1,
+        "tasting" : [4,5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 30,
+            "old": 24.99,
+            "new": 17.99
+        },
+        "img" : ["illy-classico-medium-1.jpg","illy-classico-medium-2.jpg"],
+        "date" : "2020-09-21T09:02:01.475Z"
+    },
+    {
+        "id":4,
+        "title":"Lavazza Qualita Oro Ground Coffee",
+        "description": "A unique combination of 6 varieties of Arabica beans from amongst the finest of Central and South America, expertly crafted and perfectly blended. The perfect symphony for a superior taste every time, since 1956.",
+        "brand" : 1,
+        "category" : 1,
+        "tasting" : [1,2,3],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["lavazza-qualita-oro-1.webp","lavazza-qualita-oro-2.webp","lavazza-qualita-oro-3.png"],
+        "date" : "2021-01-10T22:32:11.957Z"
+    },
+    {
+        "id":5,
+        "title":"Lavazza Professional DEK Coffee Beans",
+        "description": "Lavazza Professional DEK decaffeinated coffee beans are a well-balanced blend of full-bodied Brazilian and delicate Asian coffee beans, with a full flavour and rounded aroma, accompanied by a velvety crema.",
+        "brand" : 1,
+        "category" : 2,
+        "tasting" : [6],
+        "size" : "500g",
+        "decaf": true,
+        "price" : {
+            "discount": 25,
+            "old": 39.99,
+            "new": 29.99
+        },
+        "img" : ["lavazza-dek-1.jpg","lavazza-dek-2.jpg","lavazza-dek-3.jpg"],
+        "date" : "2021-02-11T05:12:41.147Z"
+    },
+    {
+        "id": 6,
+        "title":"Illy Intenso Dark Roast Ground Coffee",
+        "description": "Roasted at a higher temperature, this coffee is intense, robust and full flavoured with deep notes of cocoa intertwined with subtle hints of caramel. Illy’s distinctive blend of fine Arabica coffees comes with a smooth, rich and full-bodied taste.",
+        "brand" : 2,
+        "category" : 1,
+        "tasting" : [4,5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-intenso-dark-1.jpg","illy-intenso-dark-2.jpg"],
+        "date" : "2021-02-17T05:12:41.147Z"
+    },
+    {
+        "id": 7,
+        "title":"Lavazza Caffe Espresso Coffee Beans",
+        "description": "Lavazza Cafe Espresso is roasted from 100% Arabica beans carefully selected to create a coffee with subtle notes of chocolate. It is suitable for all types of coffee, including short and long black, flat white, cafe latte and cappuccino.",
+        "brand" : 1,
+        "category" : 2,
+        "tasting" : [5],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 20,
+            "old": 49.99,
+            "new": 39.99
+        },
+        "img" : ["lavazza-caffe-espresso-1.jpg","lavazza-caffe-espresso-2.png","lavazza-caffe-espresso-3.jpg"],
+        "date" : "2021-02-07T19:22:44.841Z"
+    },
+    {
+        "id": 8,
+        "title":"Lazumba Latino Coffee Beans",
+        "description": "LaZumba Latino is a true blend of the world, with bean origins from three of the world's best coffee growing regions.  Latino gives a wonderful intensity and complexity to the cup, with a melting pot of lively flavours.",
+        "brand" : 3,
+        "category" : 2,
+        "tasting" : [7,1],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 15,
+            "old": 34.99,
+            "new": 29.99
+        },
+        "img" : ["lazumba-latino-1.png","lazumba-latino-2.jpg"],
+        "date" : "2021-02-05T16:42:11.443Z"
+    },
+    {
+        "id": 9,
+        "title":"Lazumba Rumba Coffee Beans",
+        "description": "Offering a diverse and intense mix of flavours this blend pours thick and rich, with excellent crema production, making it an ideal all-around espresso blend.  Rumba's ability to cut through milk makes it ideal for milk based coffees such as cappuccino and cafe latte.",
+        "brand" : 3,
+        "category" : 2,
+        "tasting" : [8,5],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 34.99
+        },
+        "img" : ["lazumba-rumba-1.jpg","lazumba-rumba-2.jpg"],
+        "date" : "2020-09-24T09:41:34.265Z"
+    },
+    {
+        "id": 10,
+        "title":"Grinders CLASSIC BLEND Coffee Beans",
+        "description": "Grinders classic blend is blended from Arabica beans. Depth is added in the form of mild earthy flavours from naturally processed robusta beans. If you like your coffee strong and well rounded, this crowd pleasing punchy blend is designed for milk based coffees, but delivers a good strong espresso.",
+        "brand" : 4,
+        "category" : 2,
+        "tasting" : [5,4],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 15,
+            "old": 34.99,
+            "new": 29.99
+        },
+        "img" : ["grinders-classic-1.jpg","grinders-classic-2.jpg","grinders-classic-3.jpg"],
+        "date" : "2021-02-19T02:12:24.658Z"
+    },
+    {
+        "id": 11,
+        "title":"Grinders Source FTO Coffee Beans",
+        "description": "Grinders Source is a fairtrade organic 3 origin blend from Ethiopia Sidamo, Papua New Guinea and Nicaragua.  The origins combined produce a smooth medium body with a syrupy after taste.  In the cup it's a fruit-bomb as a black option and cuts through milk with its sweet caramel, chocolate and malt notes.",
+        "brand" : 4,
+        "category" : 2,
+        "tasting" : [1,9,5,4],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 15,
+            "old": 34.99,
+            "new": 29.99
+        },
+        "img" : ["grinders-source-1.jpg","grinders-source-2.jpg","grinders-source-3.jpg"],
+        "date" : "2021-02-20T12:32:46.958Z"
+    },
+    {
+        "id": 12,
+        "title":"Grinders FOUNDATION BLEND Coffee Beans",
+        "description": "Grinders Foundation Blend is a well rounded four bean blend which has been optimised for milk coffees, whilst giving the right amount of sweetness and complexity to hold its own as a black coffee. This is a smoth balanced coffee with a lingering sweet finish.",
+        "brand" : 4,
+        "category" : 2,
+        "tasting" : [4,10],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 15,
+            "old": 34.99,
+            "new": 29.99
+        },
+        "img" : ["grinders-foundation-1.jpg","grinders-foundation-2.jpg","grinders-foundation-3.jpg"],
+        "date" : "2021-02-08T12:45:14.785Z"
+    },
+    {
+        "id": 13,
+        "title":"Amanti Golden Moka Coffee Beans",
+        "description": "This well balanced medium roast is light in the cheeks with delicious overtones of chocolate and hazelnuts. Rich and complex, it leaves you with a satisfying sweet lingering aftertaste.",
+        "brand" : 5,
+        "category" : 2,
+        "tasting" : [5],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 39.99
+        },
+        "img" : ["amanti-golden-moka-1.jpg","amanti-golden-moka-2.jpg"],
+        "date" : "2021-01-18T13:59:42.654Z"
+    },
+    {
+        "id": 14,
+        "title":"Amanti Hunter Gold Coffee Beans",
+        "description": "With its unique balance of flavours and fruity overtones, this velvety dark roast blend will quickly capture your heart.",
+        "brand" : 5,
+        "category" : 2,
+        "tasting" : [1],
+        "size" : "1kg",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 39.99
+        },
+        "img" : ["amanti-hunter-gold-1.jpg","amanti-hunter-gold-2.jpg"],
+        "date" : "2021-01-18T20:19:29.155Z"
+    },
+    {
+        "id": 15,
+        "title":"Hausbrandt Gourmet Espresso Ground Coffee",
+        "description": "A blend of selected 100% Arabica coffee, with spicy and citrusy notes. The delicate sweetness and refined acidity make this a prized, sophisticated coffee. Thanks to its particular grind, this coffee is ideal for use in moka coffee pots.",
+        "brand" : 6,
+        "category" : 1,
+        "tasting" : [7],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 10,
+            "old": 14.99,
+            "new": 12.99
+        },
+        "img" : ["hausbrandt-gourmet-1.jpg","hausbrandt-gourmet-2.jpg"],
+        "date" : "2021-02-18T19:49:11.511Z"
+    },
+    {
+        "id": 16,
+        "title":"Hausbrandt Espresso Ground Coffee",
+        "description": "A blend of selected 100% Arabica coffee. A coffee with a sweet and enveloping flavour, medium body and pleasing floral scents. Thanks to its particular grind, this coffee is ideal for use in espresso machines.",
+        "brand" : 6,
+        "category" : 1,
+        "tasting" : [2],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 30,
+            "old": 11.99,
+            "new": 8.49
+        },
+        "img" : ["hausbrandt-espresso-1.jpg","hausbrandt-espresso-2.jpg"],
+        "date" : "2021-01-11T10:42:19.335Z"
+    },
+    {
+        "id": 17,
+        "title":"Hausbrandt Decaffeinated Ground Coffee",
+        "description": "A delicate blend of selected 100% Arabica coffee, distinguished by its subtle coffee aroma, accompanied by pleasing notes of nuts. Thanks to its particular grind, this coffee is ideal for use in moka coffee pots.",
+        "brand" : 6,
+        "category" : 1,
+        "tasting" : [10],
+        "size" : "250g",
+        "decaf": true,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 11.99
+        },
+        "img" : ["hausbrandt-decaffeinato-1.jpg","hausbrandt-decaffeinato-2.jpg"],
+        "date" : "2021-01-18T20:19:29.155Z"
+    },
+    {
+        "id": 18,
+        "title":"Hausbrandt Espresso Moka Ground Coffee",
+        "description": "A particularly pleasing blend of selected 100% Arabica coffees with a characteristic sweetness. The sweet, enveloping aroma and light body make this coffee difficult to resist. Thanks to its particular grind, this coffee is ideal for use in moka coffee pots.",
+        "brand" : 6,
+        "category" : 1,
+        "tasting" : [5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 11.99
+        },
+        "img" : ["hausbrandt-moka-1.jpg","hausbrandt-moka-2.jpg"],
+        "date" : "2021-02-20T09:12:45.785Z"
+    },
+    {
+        "id": 19,
+        "title":"NESCAFE CLASICO Mild Medium Roast Instant Coffee",
+        "description": "Discover Nescafe Clasico Mild, made with 100% Colombian Arabica coffee beans and finely roasted so you can enjoy all its flavor.  Ideal for those who prefer a smoother, less bitter and more balanced coffee cup.",
+        "brand" : 7,
+        "category" : 3,
+        "tasting" : [1],
+        "size" : "200g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 6.99
+        },
+        "img" : ["nescafe-classic-mild-1.jpg","nescafe-classic-mild-2.jpg"],
+        "date" : "2021-01-20T10:52:33.988Z"
+    },
+    {
+        "id": 20,
+        "title":"NESCAFE CLASICO Dark Roast Instant Coffee",
+        "description": "NESCAFÉ CLÁSICO Dark Roast delivers rich, bold flavor in every cup. Crafted with 100% real coffee, you can taste the quality instantly. We use only the highest quality, responsibly sourced Arabica and Robusta coffee beans and carefully roast them to capture each blend's full flavor and aroma.",
+        "brand" : 7,
+        "category" : 3,
+        "tasting" : [5],
+        "size" : "200g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 6.99
+        },
+        "img" : ["nescafe-classic-1.jpg","nescafe-classic-2.jpg","nescafe-classic-3.jpg"],
+        "date" : "2021-01-21T10:22:12.668Z"
+    },
+    {
+        "id": 21,
+        "title":"Nescafe Gold Blend Rich & Smooth Instant Coffee",
+        "description": "Exceed all expectations when it comes to instant coffee with NESCAFÉ Gold for the perfectly balanced cup of coffee. Ground 10 times finer than the average roast and ground coffee. Easy to experiment and customize to your own perfect cup.",
+        "brand" : 7,
+        "category" : 3,
+        "tasting" : [5],
+        "size" : "200g",
+        "decaf": false,
+        "price" : {
+            "discount": 20,
+            "old": 11.99,
+            "new": 9.99
+        },
+        "img" : ["nescafe-gold-1.jpg","nescafe-gold-2.jpg","nescafe-gold-3.jpg"],
+        "date" : "2021-02-17T12:12:42.168Z"
+    },
+    {
+        "id": 22,
+        "title":"NESCAFE CLASICO Decaf Dark Roast Instant Coffee",
+        "description": "NESCAFE CLASICO Decaf brings you the full-flavored fresh brewed taste and aroma of NESCAFE CLASICO. Unlike other decaffeinated coffees, we only use water to decaffeinate our freshly hand-picked coffee to preserve all the rich, robust flavor you love.",
+        "brand" : 7,
+        "category" : 3,
+        "tasting" : [5],
+        "size" : "200g",
+        "decaf": true,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 7.99
+        },
+        "img" : ["nescafe-decaf-1.jpg","nescafe-decaf-2.jpg"],
+        "date" : "2021-02-18T15:36:21.148Z"
+    },
+    {
+        "id": 23,
+        "title":"Jacobs Kronung Instant Coffee",
+        "description": "Jacobs Kronung Instant provides all the goodness of Jacobs Kronung coffee in an instant! Finest quality coffee with the superior Jacobs taste and without the hassle. You will discover that it's the closest to fresh brewed coffee you can possibly get.",
+        "brand" : 8,
+        "category" : 3,
+        "tasting" : [5],
+        "size" : "200g",
+        "decaf": false,
+        "price" : {
+            "discount": 25,
+            "old": 14.99,
+            "new": 10.99
+        },
+        "img" : ["jacobs-kronung-1.jpg","jacobs-kronung-2.jpg"],
+        "date" : "2021-02-01T16:26:50.521Z"
+    },
+    {
+        "id": 24,
+        "title":"Jacobs Cronat Gold Instant Coffee",
+        "description": "Jacobs Cronat Gold provides all the goodness of Jacobs coffee in an instant! Finest quality coffee with the superior Jacobs taste and without the hassle. You will discover that it's the closest to fresh brewed coffee you can possibly get. Smoother and more mild than Jacobs Krönung Instant coffee.",
+        "brand" : 8,
+        "category" : 3,
+        "tasting" : [1],
+        "size" : "200g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 11.99
+        },
+        "img" : ["jacobs-cronat-gold-1.jpg","jacobs-cronat-gold-2.jpg"],
+        "date" : "2021-02-01T16:26:50.521Z"
+    },
+    {
+        "id": 25,
+        "title":"Illy Intenso Dark Roast Coffee Beans",
+        "description": "Roasted at a higher temperature, Illy Intenso dark roast is intense, robust and full flavoured with deep notes of cocoa intertwined with subtle hints of caramel.  Illy’s distinctive blend of fine Arabica coffees with a smooth, rich and full-bodied taste is created from the skillful blending of 100% sustainably-grown Arabica beans.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [4,5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-intenso-dark-roast-beans-1.jpg","illy-cup.jpg"],
+        "date" : "2021-02-02T11:21:33.451Z"
+    },
+    {
+        "id": 26,
+        "title":"Illy Medium Roast Coffee Beans",
+        "description": "Illy whole bean coffee is the perfect choice for coffee lovers who prefer grinding the beans to suit their own individual taste and preparation method.  Illy’s distinctive blend of fine Arabica coffees with a smooth, rich and full-bodied taste is created from the skillful blending of 100% sustainably-grown Arabica beans.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [4,5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-classico-medium-roast-beans-1.jpg","illy-cup.jpg"],
+        "date" : "2021-02-13T19:41:52.599Z"
+    },
+    {
+        "id": 27,
+        "title":"Illy Monoarabica Brazil Coffee Beans",
+        "description": "Explore Brazil... Bold and Flavorful. The lush and verdant forests, deep in the Cerrado Mineiro region, create an enchanting landscape with well-defined wet and dry seasons, which provide one of the world’s finest beginnings for coffee.  Escape to far off places that spark the imagination with each sip of new illy MONOARABICA™ coffee.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [5],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-brazil-beans-1.jpg","illy-cup.jpg"],
+        "date" : "2021-02-12T16:24:32.154Z"
+    },
+    {
+        "id": 28,
+        "title":"Illy Monoarabica Colombia Coffee Beans",
+        "description": "In Colombia, the Andes Cordillera is divided into three mountain chains, creating the ideal conditions for growing quality coffee. The different combinations of soil, altitude and climate make this territory unique, and coffee can be harvested here twice a year.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [1],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-colombia-beans-1.jpg","illy-cup.jpg"],
+        "date" : "2021-02-14T14:41:42.954Z"
+    },
+    {
+        "id": 29,
+        "title":"Illy Monoarabica Ethiopia Coffee Beans",
+        "description": "Coffee is believed to have originated in the forests of Ethiopia, and the coffee plant still grows here in the wild, amid the shady vegetation. It is picked by hand in the plantations and even in domestic gardens, where coffee ripens alongside the other crops.  Escape to far off places that spark the imagination with each sip of new illy MONOARABICA™ coffee.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [11],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 0,
+            "old": 0,
+            "new": 19.99
+        },
+        "img" : ["illy-ethiopia-beans-1.jpg","illy-ethiopia-beans-2.jpg"],
+        "date" : "2021-02-21T15:31:22.369Z"
+    },
+    {
+        "id": 30,
+        "title":"Illy Monoarabica Guatemala Coffee Beans",
+        "description": "In Guatemala, coffee grows in unspoiled mountain areas, where agriculture respects biodiversity and preserves soil richness. The chill of the altitude is tempered by warm Mexican winds, and coffee plants can be grown at up to 2000 m.  Escape to far off places that spark the imagination with each sip of new illy MONOARABICA™ coffee.",
+        "brand" : 2,
+        "category" : 2,
+        "tasting" : [5,4,11,3],
+        "size" : "250g",
+        "decaf": false,
+        "price" : {
+            "discount": 15,
+            "old": 19.99,
+            "new": 16.99
+        },
+        "img" : ["illy-guatemala-beans-1.jpg","illy-guatemala-beans-2.png","illy-guatemala-beans-3.jpg"],
+        "date" : "2021-02-19T15:14:19.345Z"
+    }
+    
+]

@@ -1,0 +1,14 @@
+[
+    {
+        "id":1,
+        "name": "Ground coffee"
+    },
+    {
+        "id":2,
+        "name": "Coffee Beans"
+    },
+    {
+        "id":3,
+        "name":"Instant Coffee"
+    }
+]

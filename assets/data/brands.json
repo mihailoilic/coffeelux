@@ -1,0 +1,34 @@
+[
+    {
+        "id":1,
+        "name":"Lavazza"
+    },
+    {
+        "id":2,
+        "name":"Illy"
+    },
+    {
+        "id":3,
+        "name":"LaZumba"
+    },
+    {
+        "id":4,
+        "name":"Grinders"
+    },
+    {
+        "id":5,
+        "name":"Amanti"
+    },
+    {
+        "id":6,
+        "name":"Hausbrandt"
+    },
+    {
+        "id":7,
+        "name":"Nescafe"
+    },
+    {
+        "id":7,
+        "name":"Jacobs"
+    }
+]
