@@ -210,6 +210,8 @@ a{
     #hero {
         max-width: 100vw;
         height: 100vh;
+        background-image: url("../img/coffee-slider-1.webp");
+        background-size: cover;
         .hero-text {
             max-width: 60%;
             z-index: 900;
