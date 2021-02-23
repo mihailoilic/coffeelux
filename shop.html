@@ -34,10 +34,10 @@
         <!-- lista zelja, korpa, taster za meni -->
         <div id="side-togglers" class="col-7 col-md-3 text-right">
             <a id="wishlist-button" class="position-relative mx-2" href="#!">
-                <span class="far fa-heart"></span><span class="badge badge-dark">1</span>
+                <span class="far fa-heart"></span><span class="badge badge-dark"></span>
             </a>
             <a id="cart-button" class="position-relative mx-2" href="#!">
-                <span class="fas fa-shopping-cart"></span>
+                <span class="fas fa-shopping-cart"></span><span class="badge badge-dark">1</span>
             </a>
             <a id="menu-button" class="position-relative d-inline d-md-none mx-2" href="#!">
                 <span class="fas fa-bars"></span>
@@ -77,6 +77,36 @@
                     </a>
                 </div>
                 <div id="product-modal-content" class="mx-0 mt-5 p-4 row">
+                    <div id="product-modal-images" class="col-12 col-md-6">
+                        <img src="assets/img/illy-cup.jpg" id="product-modal-image" alt="" class="img-fluid"/>
+                        <div id="product-modal-all-images" class="row mt-2 mx-0"></div>
+                    </div>
+                    <div id="product-modal-info" class="col-12 col-md-6 d-flex flex-column">
+                        <h4 id="product-modal-title" class="mt-4 mt-md-0"></h4>
+                        <p id="product-modal-category" class="text-muted m-0"></p>
+                        <div id="product-modal-discount-wrapper">
+                            <span class="product-modal-discount d-inline text-white p-1"></span>
+                        </div>
+                        <p id="product-modal-description" class="mt-3"></p>
+                        <p>
+                            <span class="font-weight-bold">Tasting: </span>
+                            <span id="product-modal-tasting"></span>
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">Package size: </span>
+                            <span id="product-modal-package-size"></span>
+                        </p>
+                        <div>
+                            <s id="product-modal-old-price" class="text-muted"></s>
+                            <span id="product-modal-new-price" class="color-primary h4"></span>
+                        </div>
+                        <div class="mt-3">
+                            <a href="#!" class="primary-button p-2 text-white" id="add-to-cart">Add to cart</a><input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="1" min="1", max="99" onchange="if (this.value<1) {this.value=1;} if(this.value>99){this.value=99;}"/> 
+                            <a href="#!" class="ml-2" id="add-to-wishlist">
+                                <span class="far fa-heart"></span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

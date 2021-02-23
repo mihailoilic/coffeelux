@@ -347,6 +347,12 @@ a, a:hover {
   background: rgba(184, 120, 78, 0.6);
 }
 
+#product-modal-overlay #product-modal-wrapper #add-to-wishlist span {
+  position: relative;
+  top: 5px;
+  font-size: 1.6em;
+}
+
 #new-arrivals, #discounted {
   margin: 0 80px;
 }

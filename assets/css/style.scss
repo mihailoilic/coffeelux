@@ -287,6 +287,13 @@ a{
                 background: rgba($primary, .6);
             }
         }
+        #add-to-wishlist {
+            span {
+                position: relative;
+                top: 5px;
+                font-size: 1.6em;
+            }
+        }
     }
     
 }
