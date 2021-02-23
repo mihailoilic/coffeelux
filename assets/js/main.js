@@ -91,7 +91,7 @@ function getLocalStorageItem(name){
     }
     return false;
 }
-function cartProductIndex(id){
+function getCartProductIndexByID(id){
     let productIndex = -1;
     data.cart.find((el,ind)=>{ 
         if(el.id == id){
@@ -102,9 +102,9 @@ function cartProductIndex(id){
     });
     return productIndex;
 }
-function setCartItem(productID, quantity, add = false){
+function setCartProduct(productID, quantity, add = false){
     if(data.cart){
-        let productIndex = cartProductIndex(productID);
+        let productIndex = getCartProductIndexByID(productID);
         if(productIndex > -1){
             let newQuantity = quantity;
             if(add){
@@ -123,7 +123,7 @@ function setCartItem(productID, quantity, add = false){
     refreshBadges();
 }
 function removeCartProduct(productID){
-    data.cart.splice(cartProductIndex(productID), 1);
+    data.cart.splice(getCartProductIndexByID(productID), 1);
     localStorage.setItem("cart",JSON.stringify(data.cart));
     refreshBadges();
 }
@@ -158,8 +158,8 @@ function refreshBadges(){
 function loadSidebar(){
     $("#close-sidebar, #sidebar-overlay").click(hideSidebar);
     $("#sidebar").click(function(event){event.stopPropagation()});
-    $("#cart-button").click(openCart);
-    $("#wishlist-button").click(openWishList);
+    $("#cart-button").click(showCart);
+    $("#wishlist-button").click(showWishList);
 }
 function showSidebar(title, htmlContent, iconClass){
     $("#sidebar-title").text(title);
@@ -201,7 +201,7 @@ function createSidebarContent(array, type){
                 </a>
                 <div id="sidebar-item-info" class="d-flex flex-column justify-content-center align-items-start ml-4">
                     <h5>${product.title}</h5>`;
-                    html+= cart ? insertSidebarCartInfo(product, array[i]) : insertSidebarWishListInfo(product);
+                    html+= cart ? getSidebarCartItemInfo(product, array[i]) : getSidebarWishListItemInfo(product);
                 html+=`</div>
                     </div>`;
         }
@@ -213,14 +213,14 @@ function createSidebarContent(array, type){
 }
 
 //KORPA
-function insertSidebarCartInfo(product, cartItem){
+function getSidebarCartItemInfo(product, cartItem){
     let price = product.price.new * Number(cartItem.quantity);
     data.cart[i].price = product.price.new;
     return `<div class="my-3">Quantity: <input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="${cartItem.quantity}" data-product-id="${product.id}" min="1", onchange="if(this.value<1){this.value=1;}"/></div>
     <span class="cart-item-price color-primary h4">${formatPrice(price)}</span>
     <a href="#!" data-product-id="${product.id}" class="remove-cart-item d-flex align-items-center primary-button p-2 text-white">Remove</a>`;
 }
-function openCart(){
+function showCart(){
     let html = createSidebarContent(data.cart, "cart");
     showSidebar("Your Cart", html, "fas fa-shopping-cart");
     showCartTotal();
@@ -228,20 +228,20 @@ function openCart(){
     $(".sidebar-item .product-link")
         .click(hideSidebar)
         .each(function(){
-            bindProductsModal(this);
+            bindProductModalLink(this);
         });
 
     $(".sidebar-item .remove-cart-item").click(function(){
         removeCartProduct(Number($(this).attr("data-product-id")));
-        $(this).parent().parent().fadeOut(300, openCart);
+        $(this).parent().parent().fadeOut(300, showCart);
     });
 
     $(".sidebar-item .cart-item-quantity").change(function(){
         let id = Number($(this).attr("data-product-id"));
         let quantity = Number($(this).val());
-        let index = cartProductIndex(id);
+        let index = getCartProductIndexByID(id);
         let price = data.cart[index].price;
-        setCartItem(id,quantity);
+        setCartProduct(id,quantity);
         $(this)
             .parent()
             .parent()
@@ -262,10 +262,10 @@ function showCartTotal(){
 }
 
 //LISTA ZELJA
-function insertSidebarWishListInfo(product){
+function getSidebarWishListItemInfo(product){
     return `<a href="#!" data-product-id="${product.id}" class="remove-wishlist-item d-flex align-items-center primary-button p-2 text-white"><span class="fas fa-heart-broken"></span>&nbsp;Remove</a>`;
 }
-function openWishList(){
+function showWishList(){
     
     let html = createSidebarContent(data.wishList, "wish list");
     showSidebar("Your Wish List", html, "far fa-heart");
@@ -273,12 +273,12 @@ function openWishList(){
     $(".sidebar-item .product-link")
         .click(hideSidebar)
         .each(function(){
-            bindProductsModal(this);
+            bindProductModalLink(this);
         });
 
     $(".sidebar-item .remove-wishlist-item").click(function(){
         removeWishListProduct(Number($(this).attr("data-product-id")));
-        $(this).parent().parent().fadeOut(300, openWishList);
+        $(this).parent().parent().fadeOut(300, showWishList);
     });
 }
 
@@ -294,7 +294,7 @@ function loadProductsModal(){
 }
 function bindAddToCartButton(){
     $("#add-to-cart").click(function(){
-        setCartItem(Number($(this).attr("data-product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
+        setCartProduct(Number($(this).attr("data-product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
         $("#product-modal-info .cart-item-quantity").val("1");
         let success = document.createElement("p");
         $(success)
@@ -318,10 +318,10 @@ function bindWishListModalButton(){
         else {
             setWishListProduct(productID);
         }
-        refreshWishListModalIcon();
+        refreshModalWishListIcon();
     });
 }
-function bindProductsModal(element){
+function bindProductModalLink(element){
     let product = getItemById(data.products, element.getAttribute("data-product-id"));
     $(element).click(function(){
         showProductsModal(product);
@@ -336,7 +336,7 @@ function showProductsModal(product){
     $("#product-modal-overlay").stop().fadeIn(300);
     $("body").css("overflow-y", "hidden");
     bindProductModalImages();
-    refreshWishListModalIcon();
+    refreshModalWishListIcon();
 }
 function insertProductModalData(product){
     let decaf = product.decaf ? "Decaffeinated" : "";
@@ -379,7 +379,7 @@ function bindProductModalImages(){
             .animate({"opacity":"1"}, 200); 
     });
 }
-function refreshWishListModalIcon(){
+function refreshModalWishListIcon(){
     let heartClass = "far";
     let productID = Number($("#add-to-wishlist").attr("data-product-id"));
     if(data.wishList && data.wishList.includes(productID)){
@@ -416,7 +416,7 @@ function showProducts(containerID, products, grid = true){
         .html(html)
         .find(`.product-link`)
         .each(function(){
-            bindProductsModal(this);
+            bindProductModalLink(this);
         });
 }
 //FILTRIRANJE I SORTIRANJE
