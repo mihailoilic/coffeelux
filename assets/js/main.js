@@ -622,7 +622,7 @@ function showProductsGrid(){
     let pagination = Number($("#paginate-products").val());
     if(filteredProducts.length){
         if(pagination){
-            showProducts("shop-products-grid", filteredProducts.slice(0,12));
+            showProducts("shop-products-grid", filteredProducts.slice(0, pagination));
             paginateProductsGrid(filteredProducts, pagination);
         }
         else {
