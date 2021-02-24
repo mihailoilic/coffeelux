@@ -113,11 +113,88 @@
     </div>
     <!-- SHOP SADRZAJ -->
     <main id="shop">
-        <section id="shop-image" class="d-flex justify-content-center align-items-center">
+        <section id="shop-image" class="d-flex flex-column justify-content-center align-items-center">
             <h1 class="text-white">Shop</h1>
+            <h2 class="text-white h6">Begin your journey.</h2>
         </section>
-        <div id="shop-pr" class="container row mx-auto"></div>
+        <div id="shop-products" class="row mx-auto p-3 p-lg-5">
+            <div id="shop-products-filters" class="col-12 col-sm-4 col-md-3 col-xl-2 mt-5">
+                <ul id="filter-general">
+                    <li class="form-check">
+                        <input class="form-check-input" type="checkbox" id="filter-discount" value="discount"/>
+                        <label class="form-check-label" for="filter-discount">
+                          Discounted only
+                        </label>
+                     </li>
+                </ul>
+                <h5 class="mt-5">Max Price</h5>
+                <div class="form-group">
+                    <input type="range" class="form-control-range" id="max-price" min="1" max="100">
+                    <div class="d-flex justify-content-between">
+                        <label for="max-price"></label>
+                        <a href="#!" id="clear-max-price" class="text-red">Clear</a>
+                    </div>
+                  </div>
+                <h5 class="mt-5">Caffeine</h5>
+                <ul id="filter-caffeine" class="mt-1">
+                    <li class="form-check">
+                        <input class="form-check-input" type="checkbox" id="filter-caffeinated" value="false"/>
+                        <label class="form-check-label" for="filter-caffeinated">
+                          Caffeinated
+                        </label>
+                     </li>
+                     <li class="form-check">
+                        <input class="form-check-input" type="checkbox" id="filter-decaffeinated" value="true"/>
+                        <label class="form-check-label" for="filter-decaffeinated">
+                          Decaffeinated
+                        </label>
+                     </li>
+                </ul>
+                <h5 class="mt-5">Categories</h5>
+                <ul id="filter-categories" class="mt-1">
+                </ul>
+                <h5 class="mt-5">Brands</h5>
+                <ul id="filter-brands" class="mt-1">
+                </ul>
+                <h5 class="mt-5">Tasting</h5>
+                <ul id="filter-tasting" class="mt-1">
+                </ul>
+            </div>
+            <div id="shop-products-grid-wrapper" class="col-12 col-sm-8 col-md-9 col-xl-10 mt-3">
+                <div id="shop-products-view" class="row justify-content-between">
+                    <div class="col-12 col-sm-12 col-xl-5 my-2 m-md-none">
+                        <span><span class="fas fa-search"></span> Search products:</span>
+                        <input type="text" class="form-control" value="" id="search-products" placeholder="Enter keywords here"/>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-4 my-2 m-md-none">
+                        <span><span class="fas fa-sort"></span> Sort by:</span>
+                        <select class="form-control" id="sort-products">
+                            <option value="date">Most recently added</option>
+                            <option value="discount">Most discount</option>
+                            <option value="price-asc">Price ascending</option>
+                            <option value="price-desc">Price descending</option>
+                            <option value="name-asc">Name ascending</option>
+                            <option value="name-desc">Name descending</option>
+                          </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3 my-2 m-md-none">
+                        <span><span class="fas fa-layer-group"></span> Pagination:</span>
+                        <select class="form-control" id="paginate-products">
+                            <option value="0">None</option>
+                            <option value="12" selected="selected">Show 12 products per page</option>
+                            <option value="24">Show 24 products per page</option>
+                          </select>
+                    </div>
+                </div>
+                <div id="shop-products-grid" class="row mt-5">
+                    
+                </div>
+                <div id="pagination" class="mt-5 text-center">
+                </div>
+            </div>
+        </div>
     </main>
+    <hr/>
     <footer class="row container mx-auto align-items-center mt-4 py-4">
         <div id="footer-company-info" class="col-12 col-md-4 text-center">
             <a class="font-weight-bold" href="index.html">

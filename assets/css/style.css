@@ -429,4 +429,23 @@ footer #footer-links #footer-links-title {
   min-height: 500px;
   background-image: url("../img/coffee-slider-1.webp");
 }
+
+#shop-products {
+  max-width: 1500px;
+}
+
+#shop-products #shop-products-filters h5 {
+  display: inline-block;
+  border-bottom: 1px solid #b8784e;
+}
+
+#shop-products #shop-products-grid-wrapper span {
+  color: #b8784e;
+}
+
+#shop-products #pagination a.active {
+  background: #b8784e;
+  color: #fff;
+  border-color: #b8784e !important;
+}
 /*# sourceMappingURL=style.css.map */

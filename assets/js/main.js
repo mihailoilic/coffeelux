@@ -165,6 +165,9 @@ function showSidebar(title, htmlContent, iconClass){
     $("#sidebar-title").text(title);
     $("#sidebar-content").html(htmlContent);
     $("#sidebar-icon").removeAttr("class").attr("class", iconClass);
+    if($("#sidebar-overlay").is(":visible")){
+        return;
+    }
     $("#sidebar-overlay")
         .stop()
         .fadeIn(400)
@@ -191,7 +194,7 @@ function createSidebarContent(array, type){
     let cart = type == "cart";
     if(array && array.length > 0){
         for(i in array){
-            let product = cart ? getItemById(data.products, array[i].id) : getItemById(data.products, array[i]);
+            let product = cart ? getItemByID(data.products, array[i].id) : getItemByID(data.products, array[i]);
             html += `<div class="sidebar-item p-0 mt-5 d-flex">
                 <a href="#!" data-product-id="${product.id}" class="product-link bg-white d-flex align-items-center justify-content-center">
                     <div class="sidebar-item-image">
@@ -201,9 +204,13 @@ function createSidebarContent(array, type){
                 </a>
                 <div id="sidebar-item-info" class="d-flex flex-column justify-content-center align-items-start ml-4">
                     <h5>${product.title}</h5>`;
-                    html+= cart ? getSidebarCartItemInfo(product, array[i]) : getSidebarWishListItemInfo(product);
-                html+=`</div>
-                    </div>`;
+                    if(cart){
+                        html+= getSidebarCartItemControls(product, i);
+                    }
+                    else {
+                        html+= getSidebarWishListItemControls(product);
+                    }
+                html+=`</div></div>`;
         }
     }
     else {
@@ -213,14 +220,15 @@ function createSidebarContent(array, type){
 }
 
 //KORPA
-function getSidebarCartItemInfo(product, cartItem){
-    let price = product.price.new * Number(cartItem.quantity);
-    data.cart[i].price = product.price.new;
-    return `<div class="my-3">Quantity: <input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="${cartItem.quantity}" data-product-id="${product.id}" min="1", onchange="if(this.value<1){this.value=1;}"/></div>
+function getSidebarCartItemControls(product, index){
+    let price = product.price.new * Number(data.cart[index].quantity);
+    data.cart[index].price = product.price.new;
+    return `<div class="my-3">Quantity: <input type="number" class="cart-item-quantity pl-1 rounded-0 border" value="${data.cart[index].quantity}" data-product-id="${product.id}" min="1", onchange="if(this.value<1){this.value=1;}"/></div>
     <span class="cart-item-price color-primary h4">${formatPrice(price)}</span>
     <a href="#!" data-product-id="${product.id}" class="remove-cart-item d-flex align-items-center primary-button p-2 text-white">Remove</a>`;
 }
 function showCart(){
+
     let html = createSidebarContent(data.cart, "cart");
     showSidebar("Your Cart", html, "fas fa-shopping-cart");
     showCartTotal();
@@ -262,11 +270,11 @@ function showCartTotal(){
 }
 
 //LISTA ZELJA
-function getSidebarWishListItemInfo(product){
+function getSidebarWishListItemControls(product){
     return `<a href="#!" data-product-id="${product.id}" class="remove-wishlist-item d-flex align-items-center primary-button p-2 text-white"><span class="fas fa-heart-broken"></span>&nbsp;Remove</a>`;
 }
 function showWishList(){
-    
+
     let html = createSidebarContent(data.wishList, "wish list");
     showSidebar("Your Wish List", html, "far fa-heart");
 
@@ -322,7 +330,7 @@ function bindWishListModalButton(){
     });
 }
 function bindProductModalLink(element){
-    let product = getItemById(data.products, element.getAttribute("data-product-id"));
+    let product = getItemByID(data.products, element.getAttribute("data-product-id"));
     $(element).click(function(){
         showProductsModal(product);
     });
@@ -340,7 +348,7 @@ function showProductsModal(product){
 }
 function insertProductModalData(product){
     let decaf = product.decaf ? "Decaffeinated" : "";
-    let category = getItemById(data.categories, product.category).name;
+    let category = getItemByID(data.categories, product.category).name;
     let tasting = data.tasting.filter(el=>product.tasting.includes(el.id)).map(el=>el.name).join(", ");
     let images="";
     for (img of product.img){
@@ -387,6 +395,7 @@ function refreshModalWishListIcon(){
     }
     $("#add-to-wishlist span").attr("class", heartClass + " fa-heart")
 }
+
 //ISPIS PROIZVODA
 function formatPrice(price){
     return price.toLocaleString("en-US",{style: 'currency', currency: 'USD'});
@@ -394,7 +403,7 @@ function formatPrice(price){
 function showProducts(containerID, products, grid = true){
     let productContainerClass = "p-2";
     if(grid){
-        productContainerClass += " col-12 col-sm-6 col-md-4 col-lg-3";
+        productContainerClass += " col-12 col-md-6 col-lg-4 col-xl-3";
     }
     let html = ``;
     for(product of products){
@@ -419,9 +428,16 @@ function showProducts(containerID, products, grid = true){
             bindProductModalLink(this);
         });
 }
+
 //FILTRIRANJE I SORTIRANJE
-function getItemById(array, ID){
+function getItemByID(array, ID){
     return array.find(el => el.id == ID);
+}
+function getMaxPrice(products){
+    return sortProductsByPrice(products, "desc")[0].price.new;
+}
+function getDiscountedProducts(products){
+    return products.filter(el => el.price.discount > 0);
 }
 function sortProductsByDate(products){
     return products.sort((a,b)=>{
@@ -435,10 +451,86 @@ function sortProductsByDiscount(products){
         return b.price.discount - a.price.discount;
     });
 }
-function filterDiscountedProducts(products){
-    return products.filter(el => el.price.discount > 0);
+function sortProductsByPrice(products, direction){
+    let directionIndicator = -1;
+    if(direction == "asc") {
+        directionIndicator = 1;
+    }
+    return products.sort((a,b)=>{
+        return (a.price.new - b.price.new) * directionIndicator;
+    });
 }
-
+function sortProductsByName(products, direction){
+    let directionIndicator = -1;
+    if(direction == "asc") {
+        directionIndicator = 1;
+    }
+    return products.sort((a,b)=>{
+        if(a.title > b.title){
+            return directionIndicator;
+        }
+        else if(a.title < b.title){
+            return -directionIndicator;
+        }
+        else {
+            return 0;
+        }
+    });
+}
+function sortProducts(products, sortString){
+    let sortType = sortString.split("-")[0];
+    switch(sortType){
+        case "date": return sortProductsByDate(products);
+        case "discount": return sortProductsByDiscount(products);
+        case "price": return sortProductsByPrice(products, sortString.split("-")[1]);
+        case "name": return sortProductsByName(products, sortString.split("-")[1]);
+    }
+}
+function filterProductsDiscounted(products){
+    if($("#filter-discount").is(":checked")){
+        return getDiscountedProducts(products);
+    }
+    return products;
+}
+function filterProductsMaxPrice(products){
+    setMaxPriceValue(products);
+    let maxPrice = Number($("#max-price").val());
+    return products.filter(el=> el.price.new <= maxPrice);
+}
+function filterProductsSearch(products){
+    let search = $("#search-products").val().toLowerCase().trim();
+    if(search == ""){
+        return products;
+    }
+    return products.filter(el=>{
+        if(el.title.toLowerCase().includes(search)){
+            return true;
+        }
+        return false;
+    });
+}
+function filterProducts(filterID, propertyName, products){
+    let checkedItems = [];
+    $(`#${filterID} input:checked`).each(function(){
+        checkedItems.push($(this).val());
+    });
+    if(checkedItems.length == 0){
+        return products;
+    }
+    return products.filter(el => {
+        if(Array.isArray(el[propertyName])){
+            for(item of el[propertyName]){
+                if(checkedItems.includes(String(item))){
+                    return true;
+                }
+            }
+        }
+        else if(checkedItems.includes(String(el[propertyName]))){
+                return true;
+        }
+        return false;
+    });
+}
 
 //USMERAVANJE U SKLADU SA TRENUTNOM STRANICOM
 function pageRelatedFeatures(){
@@ -472,12 +564,106 @@ function loadNewArrivals(){
     $("#new-arrivals").slick(data.slickSettings.productsSlider);
 }
 function loadDiscounted(){
-    showProducts("discounted", filterDiscountedProducts(sortProductsByDiscount(data.products)), false);
+    showProducts("discounted", filterProductsDiscounted(sortProductsByDiscount(data.products)), false);
     $("#discounted").slick(data.slickSettings.productsSlider);
 }
 
 //SHOP STRANICA
 function loadShopPage(){
-    //FIX
-    showProducts("shop-pr", data.products);
+    showFilters("filter-categories", data.categories);
+    showFilters("filter-brands", data.brands);
+    showFilters("filter-tasting", data.tasting);
+    $("#max-price").on("input", refreshMaxPriceLabel);
+    $("#clear-max-price").click(clearMaxPrice);
+    $("#shop-products input, #sort-products, #paginate-products").change(showProductsGrid);
+    $("#search-products").keyup(showProductsGrid);
+    showProductsGrid();
+}
+function showFilters(containerID, array){
+    let html = "";
+    for(item of array){
+        html += `<li class="form-check">
+        <input class="form-check-input" type="checkbox" id="${containerID}-${item.name}" value="${item.id}"/>
+        <label class="form-check-label" for="${containerID}-${item.name}">
+          ${item.name}
+        </label>
+     </li>`;
+    }
+    $(`#${containerID}`).html(html);
+}
+function setMaxPriceValue(products){
+    if(products.length){
+        let maxPrice = String(Math.ceil(getMaxPrice(products)));
+        let maxSelected = $("#max-price").val() == $("#max-price").attr("max");
+        $("#max-price").attr("max", maxPrice);
+        if(maxSelected){
+            $("#max-price").val(maxPrice);
+        }
+        refreshMaxPriceLabel();
+    }
+}
+function refreshMaxPriceLabel(){
+    $("label[for=max-price]").text("$" + $("#max-price").val());
+    if($("#max-price").val() == $("#max-price").attr("max")){
+        $("#clear-max-price").hide();
+    }
+    else {
+        $("#clear-max-price").show();
+    }
+}
+function clearMaxPrice(){
+    $("#max-price").val($("#max-price").attr("max"));
+    refreshMaxPriceLabel();
+    showProductsGrid();
+}
+function showProductsGrid(){
+    clearPages();
+    let filteredProducts = getFilteredProducts();
+    let pagination = Number($("#paginate-products").val());
+    if(filteredProducts.length){
+        if(pagination){
+            showProducts("shop-products-grid", filteredProducts.slice(0,12));
+            paginateProductsGrid(filteredProducts, pagination);
+        }
+        else {
+            showProducts("shop-products-grid", filteredProducts);
+        }
+    }
+    else {
+        $("#shop-products-grid").html(`<p class="m-5 h5">There are no products with selected criteria.</p>`);
+    }
+}
+function getFilteredProducts(){
+    let filteredProducts = data.products;
+    filteredProducts = filterProductsDiscounted(filteredProducts);
+    filteredProducts = filterProducts("filter-caffeine", "decaf", filteredProducts);
+    filteredProducts = filterProducts("filter-categories", "category", filteredProducts);
+    filteredProducts = filterProducts("filter-brands", "brand", filteredProducts);
+    filteredProducts = filterProducts("filter-tasting", "tasting", filteredProducts);
+    filteredProducts = filterProductsSearch(filteredProducts);
+    filteredProducts = filterProductsMaxPrice(filteredProducts);
+    return sortProducts(filteredProducts, $("#sort-products").val());
+}
+function paginateProductsGrid(products, maxOnPage){
+    let productCount = products.length;
+    let pageCount = 0;
+    while(productCount > 0){
+        let productsOnPage = productCount > maxOnPage ? maxOnPage : productCount;
+        createPage(products.slice(pageCount * maxOnPage, pageCount * maxOnPage + productsOnPage), pageCount + 1);
+        pageCount++;
+        productCount-=productsOnPage;
+    }
+}
+function clearPages(){
+    $("#pagination").html("");
+}
+function createPage(productsPacket, pageNumber){
+    $("#pagination").append(`<a href="#!" class="pagination-link p-2 border${pageNumber == 1 ? " active" : ""}">${pageNumber}</a>`);
+
+    $(".pagination-link:last").click(function(){
+        $(".pagination-link").removeClass("active");
+        $(this).addClass("active");
+        showProducts("shop-products-grid", productsPacket);
+        $("html").scrollTop($("#shop-products-grid").offset().top - 200);
+    });
 }
