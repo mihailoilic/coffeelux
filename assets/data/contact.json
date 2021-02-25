@@ -1,0 +1,24 @@
+[
+    {
+        "icon":"fas fa-map-marked-alt",
+        "text": "Zdravka Čelara 16"
+    },
+    {
+        "icon":"fas fa-globe-europe",
+        "text": "Belgrade, Serbia"
+    },
+    {
+        "icon":"far fa-building",
+        "text": "Workdays from 9AM to 5PM"
+    },
+    {
+        "icon":"fas fa-phone",
+        "text": "+381 60 123456",
+        "link": "tel:+38160123456"
+    },
+    {
+        "icon": "far fa-envelope",
+        "text": "mihailo.ilic.41.19@ict.edu.rs",
+        "link": "mailto:mihailo.ilic.41.19@ict.edu.rs"
+    }
+]

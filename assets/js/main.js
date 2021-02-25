@@ -321,21 +321,21 @@ function showCartTotal(){
         $("#cart-checkout").remove();
         $("#sidebar-content").append(`<a href="#!" id="cart-checkout" class="primary-button p-2 mr-2"><span class="fas fa-shopping-bag"></span> Checkout now</a>`);
         $("#cart-checkout").click(function(){
-            showCheckout(total);
+            showCheckoutForm(total);
         });
 
         addClearAllButton("cart");
     }
 }
-function showCheckout(total){
+function showCheckoutForm(total){
     if(total < 30){
         total += data.shipping;
     }
     let html = `<div class="mt-5 py-2 d-flex justify-content-between">
         <a href="#!" id="back-to-cart"><span class="fas fa-chevron-left"></span> Back to cart</a>
-        <span> Total: <span class="color-primary h4">${formatPrice(total)}</span></span>
+        <span class="checkout-form-total"> Total: <span class="color-primary h4">${formatPrice(total)}</span></span>
     </div>
-    <form id="checkout-form" action="#" method="get" class="mt-3">
+    <form id="checkout-form" action="#" method="post" class="mt-3">
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Your full name" id="checkout-name"/>
         </div>
@@ -353,54 +353,6 @@ function showCheckout(total){
     $("#back-to-cart").click(showCart);
     $("#checkout-form").submit(validateCheckoutForm);
 }
-
-//REGULARNI IZRAZI I VALIDACIJA FORME
-function loadRegularExpressions(){
-    data.forms = {};
-    data.forms.name = {
-        "regex" : /^\p{Uppercase_Letter}\p{Letter}{1,14}(\s\p{Uppercase_Letter}\p{Letter}{1,14}){1,3}$/u,
-        "length": 30
-    };
-    data.forms.email = {
-        "regex" : /^[a-z]((\.|-|_)?[a-z0-9]){2,}@[a-z]((\.|-)?[a-z0-9]+){2,}\.[a-z]{2,6}$/i,
-        "length": 50
-    };
-    data.forms.address = {
-        "regex" : /^[\w\.]+(,?\s[\w\.]+){2,8}$/,
-        "length": 50
-    };
-    data.forms.subject = {
-        "regex": /^\p{Uppercase_Letter}[\p{Letter}\.,\?!\/-]*(\s[\p{Letter}\.,\?!\/-]+)*$/u,
-        "length": 30
-    }
-}
-function validateString(string, validation){
-    if(string.length > validation.length){
-        return "long";
-    }
-    if(!validation.regex.test(string)){
-        return "incorrect";
-    }
-    return "valid";
-}
-function validateElement(element, validation, errorMessage){
-    let fieldName = $(element).attr("placeholder");
-    let fieldValidation = validateString($(element).val(), validation);
-    if(fieldValidation == "long"){
-        formError(element, `${fieldName} is too long. Maximum characters: ${validation.length}.`);
-    }
-    else if(fieldValidation == "incorrect"){
-        formError(element, `${fieldName} is invalid. ${errorMessage}`);
-    }
-}
-function formError(element, message){
-    $(`<p class="form-error small text-danger">${message}</p>`).insertAfter($(element));
-    data.forms.error = true;
-}
-function resetFormMessages(){
-    $(".form-error").remove();
-    $(".form-success").remove();
-}
 function validateCheckoutForm(event){
     event.preventDefault();
     resetFormMessages();
@@ -410,15 +362,80 @@ function validateCheckoutForm(event){
     let email = $("#checkout-email");
     let address = $("#checkout-address");
 
-    validateElement(name, data.forms.name, "All words must begin with a capital letter.");
-    validateElement(email, data.forms.email, "Use only letters, numbers and symbols @.-_");
-    validateElement(address, data.forms.address, "Adress should include your settlement and country.");
+    validateElement(name, data.forms.name);
+    validateElement(email, data.forms.email);
+    validateElement(address, data.forms.address);
 
     if(!data.forms.error){
-        this.reset();
-        $(this).append(`<span class="fas fa-check form-success"></span><p class="form-success mt-2">You have successfully placed an order.<br/>We'll contact you soon.`);
+        $(this).remove();
+        $(".checkout-form-total, #back-to-cart").remove();
+        $("#sidebar-content").append(`<span class="fas fa-check form-success mt-5"></span><p class="mt-2">You have successfully placed an order.<br/>We'll contact you soon.`);
         removeLocalStorageItem("cart");
     }
+}
+
+
+//REGULARNI IZRAZI I VALIDACIJA FORME
+function loadRegularExpressions(){
+    data.forms = {};
+    data.forms.name = {
+        "regex" : /^\p{Uppercase_Letter}\p{Letter}{1,14}(\s\p{Uppercase_Letter}\p{Letter}{1,14}){1,3}$/u,
+        "length": 30,
+        "message": "All words must begin with a capital letter."
+    };
+    data.forms.email = {
+        "regex" : /^[a-z]((\.|-|_)?[a-z0-9]){2,}@[a-z]((\.|-)?[a-z0-9]+){2,}\.[a-z]{2,6}$/i,
+        "length": 50,
+        "message": "Use only letters, numbers and symbols @.-_"
+    };
+    data.forms.address = {
+        "regex" : /^[\w\.]+(,?\s[\w\.]+){2,8}$/,
+        "length": 50,
+        "message": "Adress should include your settlement and country."
+    };
+    data.forms.subject = {
+        "regex": /^\p{Uppercase_Letter}[\p{Letter}\.,\?!\/-]*(\s[\p{Letter}\.,\?!\/-]+)*$/u,
+        "length": 30,
+        "message": "First letter must be a capital. You can use symbols .,-/?!"
+    };
+    data.forms.message = {
+        "regex": /.{20,}/,
+        "length": 200,
+        "message": "Message must be at least 20 characters long."
+    };
+}
+function validateString(string, validation){
+    if(string == ""){
+        return "empty";
+    }
+    if(string.length > validation.length){
+        return "long";
+    }
+    if(!validation.regex.test(string)){
+        return "incorrect";
+    }
+    return "valid";
+}
+function validateElement(element, validation){
+    let fieldName = $(element).attr("placeholder");
+    let fieldValidation = validateString($(element).val(), validation);
+    if(fieldValidation == "empty"){
+        formError(element, `Plese input ${fieldName.toLowerCase()}.`);
+    }
+    if(fieldValidation == "long"){
+        formError(element, `${fieldName} is too long. Maximum characters: ${validation.length}.`);
+    }
+    else if(fieldValidation == "incorrect"){
+        formError(element, `${fieldName} is invalid. ${validation.message}`);
+    }
+}
+function formError(element, message){
+    $(`<p class="form-error small text-danger">${message}</p>`).insertAfter($(element));
+    data.forms.error = true;
+}
+function resetFormMessages(){
+    $(".form-error").remove();
+    $(".form-success").remove();
 }
 
 //MODAL ZA PROIZVODE
@@ -432,18 +449,17 @@ function loadProductsModal(){
 function bindAddToCartButton(){
     $("#add-to-cart").click(function(){
         setCartProduct(Number($(this).attr("data-product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
+
         $("#product-modal-info .cart-item-quantity").val("1");
-        let success = document.createElement("p");
-        $(success)
-            .text("Successfully added to cart!")
+        $(".add-to-cart-success").remove();
+        $(`<p class="add-to-cart-success mt-2"><span class="fas fa-check form-success"></span> Successfully added to cart.</p>`)
             .hide()
             .appendTo("#product-modal-info")
-            .fadeIn(300);
-        setTimeout(function(){
-            $(success).fadeOut(300, function(){
+            .fadeIn(300)
+            .delay(1000)
+            .fadeOut(300, function(){
                 $(this).remove();
             });
-        }, 1000);
     });
 }
 function bindWishListModalButton(){
@@ -669,6 +685,7 @@ function pageRelatedFeatures(){
     switch(data.page){
         case "Home": loadHomePage(); break;
         case "Shop": loadShopPage(); break;
+        case "Contact": loadContactPage(); break;
     }
 }
 
@@ -817,4 +834,48 @@ function clearAllFilters(){
     $("#shop-products input").prop("checked", false);
     $("#search-products").val("");
     clearMaxPrice();
+}
+
+//KONTAKT STRANICA
+async function loadContactPage(){
+    try {
+        data.contactInfo = await fetchData("contact.json");
+        showContactInfo();
+    }
+    catch(c){
+        console.log("Error loading contact info. Status: " + c);
+    }
+    $("#contact-form").submit(validateContactForm);
+}
+function showContactInfo(){
+    for(info of data.contactInfo){
+        let html = `<li class="my-4 d-flex align-items-center"><span class="${info.icon} mr-3"></span>`;
+        if(info.link){
+            html += `<a href="${info.link}">${info.text}</a></li>`;
+        }
+        else {
+            html += `${info.text}</li>`;
+        }
+        $("#contact-info").append(html);
+    }
+}
+function validateContactForm(event){
+    event.preventDefault();
+    resetFormMessages();
+    data.forms.error = false;
+
+    let name = $("#contact-name");
+    let email = $("#contact-email");
+    let subject = $("#contact-subject");
+    let message = $("#contact-message");
+
+    validateElement(name, data.forms.name)
+    validateElement(email, data.forms.email);
+    validateElement(subject, data.forms.subject);
+    validateElement(message, data.forms.message);
+
+    if(!data.forms.error){
+        this.reset();
+        $(this).append(`<span class="fas fa-check form-success"></span><p class="form-success mt-2">You have successfully sent your message.<br/>We'll contact you soon.`);
+    }
 }
