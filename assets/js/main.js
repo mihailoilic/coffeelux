@@ -1,4 +1,6 @@
-const data = {};
+const data = {
+    "shipping" : 4.99
+};
 $(document).ready(function(){
     initializePage();
 });
@@ -29,7 +31,7 @@ async function initializePage(){
 
     loadSidebar();
     loadProductsModal();
-
+    loadRegularExpressions();
     pageRelatedFeatures();
 
     $("#loading").fadeOut(1000);
@@ -219,6 +221,28 @@ function createSidebarContent(array, type){
     return html;
 }
 
+//LISTA ZELJA
+function getSidebarWishListItemControls(product){
+    return `<a href="#!" data-product-id="${product.id}" class="remove-wishlist-item d-flex align-items-center primary-button p-2 text-white"><span class="fas fa-heart-broken"></span>&nbsp;Remove</a>`;
+}
+function showWishList(){
+
+    let html = createSidebarContent(data.wishList, "wish list");
+    showSidebar("Your Wish List", html, "far fa-heart");
+
+    $(".sidebar-item .product-link")
+        .click(hideSidebar)
+        .each(function(){
+            bindProductModalLink(this);
+        });
+
+    $(".sidebar-item .remove-wishlist-item").click(function(){
+        removeWishListProduct(Number($(this).attr("data-product-id")));
+        $(this).parent().parent().fadeOut(300, showWishList);
+    });
+}
+
+
 //KORPA
 function getSidebarCartItemControls(product, index){
     let price = product.price.new * Number(data.cart[index].quantity);
@@ -264,33 +288,113 @@ function showCartTotal(){
         $(data.cart).each(function(){
             total += this.price * this.quantity;
         });
+
         $(".total-price").remove();
-        $("#sidebar-content").append(`<div class="total-price mt-5">Total price: <span class="color-primary h4">${formatPrice(total)}</span></div>`);
+        $("#sidebar-content").append(`<div class="total-price mt-5 pt-3 mb-2"><hr/>Total price: <span class="color-primary h4">${formatPrice(total)}</span></div>`);
+
+        if(total < 30){
+            $("#sidebar-content .total-price").append(` + Shipping <span class="color-primary h6">${formatPrice(data.shipping)}</span>`);
+        }
+
+        $("#cart-checkout").remove();
+        $("#sidebar-content").append(`<a href="#!" id="cart-checkout" class="primary-button p-2"><span class="fas fa-shopping-bag"></span> Checkout now`);
+        $("#cart-checkout").click(function(){
+            showCheckout(total);
+        });
     }
 }
+function showCheckout(total){
+    if(total < 30){
+        total += data.shipping;
+    }
+    let html = `<div class="mt-5 py-2 d-flex justify-content-between">
+        <a href="#!" id="back-to-cart"><span class="fas fa-chevron-left"></span> Back to cart</a>
+        <span> Total: <span class="color-primary h4">${formatPrice(total)}</span></span>
+    </div>
+    <form id="checkout-form" action="#" method="get" class="mt-3">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your full name" id="checkout-name"/>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your email" id="checkout-email"/>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your shipping address" id="checkout-address"/>
+        </div>
+        <button type="submit" class="primary-button border-0 px-2" id="checkout-submit">Place order</button>
+    </form>`;
+    
+    showSidebar("Checkout", html, "fas fa-shopping-bag");
 
-//LISTA ZELJA
-function getSidebarWishListItemControls(product){
-    return `<a href="#!" data-product-id="${product.id}" class="remove-wishlist-item d-flex align-items-center primary-button p-2 text-white"><span class="fas fa-heart-broken"></span>&nbsp;Remove</a>`;
+    $("#back-to-cart").click(showCart);
+    $("#checkout-form").submit(validateCheckoutForm);
 }
-function showWishList(){
 
-    let html = createSidebarContent(data.wishList, "wish list");
-    showSidebar("Your Wish List", html, "far fa-heart");
-
-    $(".sidebar-item .product-link")
-        .click(hideSidebar)
-        .each(function(){
-            bindProductModalLink(this);
-        });
-
-    $(".sidebar-item .remove-wishlist-item").click(function(){
-        removeWishListProduct(Number($(this).attr("data-product-id")));
-        $(this).parent().parent().fadeOut(300, showWishList);
-    });
+//REGULARNI IZRAZI I VALIDACIJA FORME
+function loadRegularExpressions(){
+    data.forms = {};
+    data.forms.name = {
+        "regex" : /^\p{Uppercase_Letter}\p{Letter}{1,14}(\s\p{Uppercase_Letter}\p{Letter}{1,14}){1,3}$/u,
+        "length": 30
+    };
+    data.forms.email = {
+        "regex" : /^[a-z]((\.|-|_)?[a-z0-9]){2,}@[a-z]((\.|-)?[a-z0-9]+){2,}\.[a-z]{2,6}$/i,
+        "length": 50
+    };
+    data.forms.address = {
+        "regex" : /^[\w\.]+(,?\s[\w\.]+){2,8}$/,
+        "length": 50
+    };
+    data.forms.subject = {
+        "regex": /^\p{Uppercase_Letter}[\p{Letter}\.,\?!\/-]*(\s[\p{Letter}\.,\?!\/-]+)*$/u,
+        "length": 30
+    }
 }
+function validateString(string, validation){
+    if(string.length > validation.length){
+        return "long";
+    }
+    if(!validation.regex.test(string)){
+        return "incorrect";
+    }
+    return "valid";
+}
+function validateElement(element, validation, errorMessage){
+    let fieldName = $(element).attr("placeholder");
+    let fieldValidation = validateString($(element).val(), validation);
+    if(fieldValidation == "long"){
+        formError(element, `${fieldName} is too long. Maximum characters: ${validation.length}.`);
+    }
+    else if(fieldValidation == "incorrect"){
+        formError(element, `${fieldName} is invalid. ${errorMessage}`);
+    }
+}
+function formError(element, message){
+    $(`<p class="form-error small text-danger">${message}</p>`).insertAfter($(element));
+    data.forms.error = true;
+}
+function resetFormMessages(){
+    $(".form-error").remove();
+    $(".form-success").remove();
+}
+function validateCheckoutForm(event){
+    event.preventDefault();
+    resetFormMessages();
+    data.forms.error = false;
 
+    let name = $("#checkout-name");
+    let email = $("#checkout-email");
+    let address = $("#checkout-address");
 
+    validateElement(name, data.forms.name, "All words must begin with a capital letter.");
+    validateElement(email, data.forms.email, "Use only letters, numbers and symbols @.-_");
+    validateElement(address, data.forms.address, "Adress should include your settlement and country.");
+
+    if(!data.forms.error){
+        this.reset();
+        $(this).append(`<span class="fas fa-check form-success"></span><p class="form-success mt-2">You have successfully placed an order.<br/>We'll contact you soon.`);
+    }
+}
 
 //MODAL ZA PROIZVODE
 function loadProductsModal(){
@@ -488,6 +592,7 @@ function sortProducts(products, sortString){
 }
 function filterProductsDiscounted(products){
     if($("#filter-discount").is(":checked")){
+        data.isFiltered = true;
         return getDiscountedProducts(products);
     }
     return products;
@@ -502,6 +607,7 @@ function filterProductsSearch(products){
     if(search == ""){
         return products;
     }
+    data.isFiltered = true;
     return products.filter(el=>{
         if(el.title.toLowerCase().includes(search)){
             return true;
@@ -517,6 +623,7 @@ function filterProducts(filterID, propertyName, products){
     if(checkedItems.length == 0){
         return products;
     }
+    data.isFiltered = true;
     return products.filter(el => {
         if(Array.isArray(el[propertyName])){
             for(item of el[propertyName]){
@@ -577,6 +684,8 @@ function loadShopPage(){
     $("#clear-max-price").click(clearMaxPrice);
     $("#shop-products input, #sort-products, #paginate-products").change(showProductsGrid);
     $("#search-products").keyup(showProductsGrid);
+    $("#clear-filters").hide().click(clearAllFilters);
+    data.firstTimeLoad = true;
     showProductsGrid();
 }
 function showFilters(containerID, array){
@@ -599,7 +708,11 @@ function setMaxPriceValue(products){
         if(maxSelected){
             $("#max-price").val(maxPrice);
         }
+        else if(!data.firstTimeLoad) {
+            data.isFiltered = true;
+        }
         refreshMaxPriceLabel();
+        data.firstTimeLoad = false;
     }
 }
 function refreshMaxPriceLabel(){
@@ -618,6 +731,7 @@ function clearMaxPrice(){
 }
 function showProductsGrid(){
     clearPages();
+    data.isFiltered = false;
     let filteredProducts = getFilteredProducts();
     let pagination = Number($("#paginate-products").val());
     if(filteredProducts.length){
@@ -631,6 +745,13 @@ function showProductsGrid(){
     }
     else {
         $("#shop-products-grid").html(`<p class="m-5 h5">There are no products with selected criteria.</p>`);
+    }
+
+    if(data.isFiltered){
+        $("#clear-filters").show();
+    }
+    else {
+        $("#clear-filters").hide();
     }
 }
 function getFilteredProducts(){
@@ -666,4 +787,9 @@ function createPage(productsPacket, pageNumber){
         showProducts("shop-products-grid", productsPacket);
         $("html").scrollTop($("#shop-products-grid").offset().top - 200);
     });
+}
+function clearAllFilters(){
+    $("#shop-products input").prop("checked", false);
+    $("#search-products").val("");
+    clearMaxPrice();
 }

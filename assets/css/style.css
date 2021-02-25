@@ -65,6 +65,7 @@ a, a:hover {
 }
 
 .primary-button {
+  color: #fff;
   background: #b8784e;
   height: 32px;
   -webkit-transition: all .3s;
@@ -73,6 +74,12 @@ a, a:hover {
 
 .primary-button:hover {
   background: rgba(184, 120, 78, 0.8);
+  color: #fff;
+}
+
+.btn-primary-color {
+  background-color: #b8784e;
+  color: #fff;
 }
 
 #close-sidebar, #close-product-modal {
@@ -310,6 +317,10 @@ a, a:hover {
      object-fit: cover;
 }
 
+#free-shipping-banner {
+  background: #b8784e;
+}
+
 #product-modal-overlay {
   display: none;
   z-index: 1100;
@@ -427,7 +438,14 @@ footer #footer-links #footer-links-title {
 
 #shop-image {
   min-height: 500px;
-  background-image: url("../img/coffee-slider-1.webp");
+  background-image: url("../img/shop.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#shop-image h1, #shop-image h2 {
+  background: rgba(0, 0, 0, 0.3);
+  text-shadow: 3px 3px 10px #000;
 }
 
 #shop-products {

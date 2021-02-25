@@ -114,12 +114,18 @@
     <!-- SHOP SADRZAJ -->
     <main id="shop">
         <section id="shop-image" class="d-flex flex-column justify-content-center align-items-center">
-            <h1 class="text-white">Shop</h1>
-            <h2 class="text-white h6">Begin your journey.</h2>
+            <h1 class="text-white p-1">Shop</h1>
+            <h2 class="text-white h6 p-1">Begin your journey.</h2>
+        </section>
+        <section id="free-shipping-banner" class="d-flex justify-content-center align-items-center text-white">
+            <h3 class="m-4 p-1"><span class="font-weight-bold"><span class="fas fa-shipping-fast"></span> FREE SHIPPING</span> on all orders over $30!</h3>
         </section>
         <div id="shop-products" class="row mx-auto p-3 p-lg-5">
-            <div id="shop-products-filters" class="col-12 col-sm-4 col-md-3 col-xl-2 mt-5">
-                <ul id="filter-general">
+            <div id="shop-products-filters" class="col-12 col-sm-4 col-md-3 col-xl-2 mt-4">
+                <div>
+                    <a href="#!" id="clear-filters"><span class="fas fa-times"></span> Clear all filters</a>&nbsp;
+                </div>
+                <ul id="filter-general" class="mt-3">
                     <li class="form-check">
                         <input class="form-check-input" type="checkbox" id="filter-discount" value="discount"/>
                         <label class="form-check-label" for="filter-discount">

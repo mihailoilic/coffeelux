@@ -9,10 +9,12 @@
     },
     {
         "title":"Contact",
-        "href":"contact.html"
+        "href":"#!"
+        // "href":"contact.html"
     },
     {
         "title":"Author",
-        "href":"author.html"
+        "href":"#!"
+        // "href":"author.html"
     }
 ]
