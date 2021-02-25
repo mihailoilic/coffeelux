@@ -32,6 +32,7 @@ async function initializePage(){
     loadSidebar();
     loadProductsModal();
     loadRegularExpressions();
+
     pageRelatedFeatures();
 
     $("#loading").fadeOut(1000);
@@ -92,6 +93,11 @@ function getLocalStorageItem(name){
         }
     }
     return false;
+}
+function removeLocalStorageItem(name){
+    data[name] = [];
+    localStorage.removeItem(name);
+    refreshBadges();
 }
 function getCartProductIndexByID(id){
     let productIndex = -1;
@@ -197,7 +203,7 @@ function createSidebarContent(array, type){
     if(array && array.length > 0){
         for(i in array){
             let product = cart ? getItemByID(data.products, array[i].id) : getItemByID(data.products, array[i]);
-            html += `<div class="sidebar-item p-0 mt-5 d-flex">
+            html += `<div class="sidebar-item p-0 my-5 d-flex">
                 <a href="#!" data-product-id="${product.id}" class="product-link bg-white d-flex align-items-center justify-content-center">
                     <div class="sidebar-item-image">
                         <img src="assets/img/${product.img[0]}" alt="${product.title}" class="w-100"/>
@@ -220,6 +226,21 @@ function createSidebarContent(array, type){
     }
     return html;
 }
+function addClearAllButton(type){
+    if(data[type] && data[type].length > 0){
+        $(`#clear-${type}`).remove();
+        $("#sidebar-content").append(`<a href="#!" id="clear-${type}" class="primary-button p-2"><span class="fas fa-times"></span> Clear all</a>`);
+        $(`#clear-${type}`).click(function(){
+            removeLocalStorageItem(type);
+            if(type == "cart"){
+                showCart();
+            }
+            else {
+                showWishList();
+            }
+        });
+    }
+}
 
 //LISTA ZELJA
 function getSidebarWishListItemControls(product){
@@ -240,8 +261,9 @@ function showWishList(){
         removeWishListProduct(Number($(this).attr("data-product-id")));
         $(this).parent().parent().fadeOut(300, showWishList);
     });
-}
 
+    addClearAllButton("wishList");
+}
 
 //KORPA
 function getSidebarCartItemControls(product, index){
@@ -297,10 +319,12 @@ function showCartTotal(){
         }
 
         $("#cart-checkout").remove();
-        $("#sidebar-content").append(`<a href="#!" id="cart-checkout" class="primary-button p-2"><span class="fas fa-shopping-bag"></span> Checkout now`);
+        $("#sidebar-content").append(`<a href="#!" id="cart-checkout" class="primary-button p-2 mr-2"><span class="fas fa-shopping-bag"></span> Checkout now</a>`);
         $("#cart-checkout").click(function(){
             showCheckout(total);
         });
+
+        addClearAllButton("cart");
     }
 }
 function showCheckout(total){
@@ -393,6 +417,7 @@ function validateCheckoutForm(event){
     if(!data.forms.error){
         this.reset();
         $(this).append(`<span class="fas fa-check form-success"></span><p class="form-success mt-2">You have successfully placed an order.<br/>We'll contact you soon.`);
+        removeLocalStorageItem("cart");
     }
 }
 
