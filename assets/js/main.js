@@ -1,5 +1,6 @@
 const data = {
-    "shipping" : 4.99
+    "shipping" : 4.99,
+    "forms" : {}
 };
 $(document).ready(function(){
     initializePage();
@@ -36,7 +37,7 @@ async function initializePage(){
     pageRelatedFeatures();
 
     $("#loading").fadeOut(1000);
-}
+}//POPRAVI LI TAG
 function loadNav(){
     for(link of data.nav) {
         let active = "";
@@ -44,7 +45,7 @@ function loadNav(){
             data.page = link.title;
             active = " active";
         }
-        $("#menu, #responsive-menu").append(`<li class="m-2"><a class="${active}" href="${link.href}">${link.title}</a>`);
+        $("#menu, #responsive-menu").append(`<li class="m-2"><a class="${active}" href="${link.href}">${link.title}</a></li>`);
     }
     if(!data.page){
         data.page = "Home";
@@ -258,7 +259,7 @@ function showWishList(){
         });
 
     $(".sidebar-item .remove-wishlist-item").click(function(){
-        removeWishListProduct(Number($(this).attr("data-product-id")));
+        removeWishListProduct(Number($(this).data("product-id")));
         $(this).parent().parent().fadeOut(300, showWishList);
     });
 
@@ -286,12 +287,12 @@ function showCart(){
         });
 
     $(".sidebar-item .remove-cart-item").click(function(){
-        removeCartProduct(Number($(this).attr("data-product-id")));
+        removeCartProduct(Number($(this).data("product-id")));
         $(this).parent().parent().fadeOut(300, showCart);
     });
 
     $(".sidebar-item .cart-item-quantity").change(function(){
-        let id = Number($(this).attr("data-product-id"));
+        let id = Number($(this).data("product-id"));
         let quantity = Number($(this).val());
         let index = getCartProductIndexByID(id);
         let price = data.cart[index].price;
@@ -377,7 +378,6 @@ function validateCheckoutForm(event){
 
 //REGULARNI IZRAZI I VALIDACIJA FORME
 function loadRegularExpressions(){
-    data.forms = {};
     data.forms.name = {
         "regex" : /^\p{Uppercase_Letter}\p{Letter}{1,14}(\s\p{Uppercase_Letter}\p{Letter}{1,14}){1,3}$/u,
         "length": 30,
@@ -448,7 +448,7 @@ function loadProductsModal(){
 }
 function bindAddToCartButton(){
     $("#add-to-cart").click(function(){
-        setCartProduct(Number($(this).attr("data-product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
+        setCartProduct(Number($(this).data("product-id")), Number($("#product-modal-info .cart-item-quantity").val()), true);
 
         $("#product-modal-info .cart-item-quantity").val("1");
         $(".add-to-cart-success").remove();
@@ -464,7 +464,7 @@ function bindAddToCartButton(){
 }
 function bindWishListModalButton(){
     $("#add-to-wishlist").click(function(){
-        let productID = Number($(this).attr("data-product-id"));
+        let productID = Number($(this).data("product-id"));
         if(data.wishList && data.wishList.includes(productID)){
             removeWishListProduct(productID);
         }
@@ -520,7 +520,7 @@ function insertProductModalData(product){
     $("#product-modal-tasting").text(tasting);
     $("#product-modal-package-size").text(product.size);
     $("#product-modal-new-price").text(formatPrice(product.price.new));
-    $("#add-to-wishlist, #add-to-cart").attr("data-product-id", String(product.id));
+    $("#add-to-wishlist, #add-to-cart").data("product-id", String(product.id));
 }
 function bindProductModalImages(){
     $(".product-image-link").click(function(){
@@ -534,7 +534,7 @@ function bindProductModalImages(){
 }
 function refreshModalWishListIcon(){
     let heartClass = "far";
-    let productID = Number($("#add-to-wishlist").attr("data-product-id"));
+    let productID = Number($("#add-to-wishlist").data("product-id"));
     if(data.wishList && data.wishList.includes(productID)){
         heartClass = "fas";
     }

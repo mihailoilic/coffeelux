@@ -77,9 +77,16 @@ a, a:hover {
   color: #fff;
 }
 
-.btn-primary-color {
-  background-color: #b8784e;
-  color: #fff;
+input, select, textarea, .primary-button {
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+input:focus, input:active, select:focus, select:active, textarea:focus, textarea:active, .primary-button:focus, .primary-button:active {
+  outline: none;
+  border-color: #b8784e !important;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(184, 120, 78, 0.25) !important;
+          box-shadow: 0 0 0 0.2rem rgba(184, 120, 78, 0.25) !important;
 }
 
 #close-sidebar, #close-product-modal {

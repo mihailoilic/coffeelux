@@ -39,9 +39,6 @@ a{
     color: $primary;
 }
 .bg-darkTransparent{
-    // background: $darkTrans;
-    // backdrop-filter: blur(4px);
-    // background: rgba(255,255,255, .5);
     background: rgba(#000, .8);
 }
 .button {
@@ -67,9 +64,13 @@ a{
     }
 
 }
-.btn-primary-color {
-    background-color: $primary;
-    color: #fff;
+input, select, textarea,  .primary-button {
+    transition: all .3s;
+    &:focus, &:active {
+        outline: none;
+        border-color: $primary !important;
+        box-shadow: 0 0 0 0.2rem rgba($primary,.25) !important;
+    }
 }
 #close-sidebar, #close-product-modal {
     position: absolute;
