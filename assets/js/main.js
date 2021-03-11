@@ -37,7 +37,7 @@ async function initializePage(){
     pageRelatedFeatures();
 
     $("#loading").fadeOut(1000);
-}//POPRAVI LI TAG
+}
 function loadNav(){
     for(link of data.nav) {
         let active = "";
