@@ -713,7 +713,7 @@ function loadNewArrivals(){
     $("#new-arrivals").slick(data.slickSettings.productsSlider);
 }
 function loadDiscounted(){
-    showProducts("discounted", filterProductsDiscounted(sortProductsByDiscount(data.products)), false);
+    showProducts("discounted", getDiscountedProducts(sortProductsByDiscount(data.products)), false);
     $("#discounted").slick(data.slickSettings.productsSlider);
 }
 
