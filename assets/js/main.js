@@ -14,6 +14,7 @@ async function initializePage(){
     }
     catch(c){
         console.log(`Error loading navigation! Status ${c}`);
+        $("#menu").append("<li>Error loading navigation. Try again later.</li>");
     }
     
     try {
@@ -24,6 +25,7 @@ async function initializePage(){
     }
     catch(c){
         console.log(`Error loading products! Status ${c}`);
+        $("#new-arrivals, #shop-products-grid").append(`<p>Error loading products! Try again later.</p>`);
     }
 
     data.cart = getLocalStorageItem("cart");
@@ -700,6 +702,7 @@ async function loadHomePage(){
     }
     catch(c){
         console.log("Error loading home page sliders. Status: " + c);
+        $("#hero").append(`<p class="mt-2">Error loading home page sliders. Try again later.</p>`);
     }
 }
 function loadSlider(){
@@ -844,6 +847,7 @@ async function loadContactPage(){
     }
     catch(c){
         console.log("Error loading contact info. Status: " + c);
+        $("#contact-info").append(`<li>Error loading contact info. Try again later.</p>`);
     }
     $("#contact-form").submit(validateContactForm);
 }
