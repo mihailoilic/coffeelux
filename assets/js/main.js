@@ -393,7 +393,7 @@ function loadRegularExpressions(){
     data.forms.address = {
         "regex" : /^[\w\.]+(,?\s[\w\.]+){2,8}$/,
         "length": 50,
-        "message": "Adress should include your settlement and country."
+        "message": "Address should include your settlement and country."
     };
     data.forms.subject = {
         "regex": /^\p{Uppercase_Letter}[\p{Letter}\.,\?!\/-]*(\s[\p{Letter}\.,\?!\/-]+)*$/u,
@@ -422,7 +422,7 @@ function validateElement(element, validation){
     let fieldName = $(element).attr("placeholder");
     let fieldValidation = validateString($(element).val(), validation);
     if(fieldValidation == "empty"){
-        formError(element, `Plese input ${fieldName.toLowerCase()}.`);
+        formError(element, `Please input ${fieldName.toLowerCase()}.`);
     }
     if(fieldValidation == "long"){
         formError(element, `${fieldName} is too long. Maximum characters: ${validation.length}.`);
